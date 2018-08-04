@@ -2,8 +2,11 @@
 App({
   onLaunch: function () {
     //调用API从本地缓存中获取数据
+    //获取本地缓存logs为数组
     var logs = wx.getStorageSync('logs') || []
+    //unshift向数组添加一个元素并且返回数组新的长度
     logs.unshift(Date.now())
+    //将logs写入缓存，覆盖掉原本的Logs内容
     wx.setStorageSync('logs', logs)
   },
   getUserInfo:function(cb){

@@ -20,6 +20,7 @@ Page({
    } ,
    onLoad:function(){
         
+    //取缓存中的最高分
        var maxscore = wx.getStorageSync('maxscore');
        if(!maxscore) maxscore = 0
         this.setData({
@@ -41,12 +42,13 @@ Page({
         wx.setStorageSync('maxscore', this.data.maxscore)
       }
   },
-  //操场
+  //操场，二维数组初始化成操场，
     initGround:function(rows,cols){
         for(var i=0;i<rows;i++){
             var arr=[];
             this.data.ground.push(arr);
             for(var j=0;j<cols;j++){
+        //操场颜色为0
                 this.data.ground[i].push(0);
             }
         }
@@ -54,13 +56,16 @@ Page({
    //蛇
    initSnake:function(len){
        for(var i=0;i<len;i++){
+      //初始化蛇，蛇的颜色为1
            this.data.ground[0][i]=1;
+      //存蛇的坐标
            this.data.snake.push([0,i]);
        }
    },
    //移动函数
    move:function(){
        var that=this;
+    //设定定时器
        this.data.timer=setInterval(function(){
             that.changeDirection(that.data.direction);
             that.setData({
@@ -69,24 +74,31 @@ Page({
        }, 400);
 
    },
+  //手指触摸起始位置
     tapStart: function(event){
         this.setData({
             startx: event.touches[0].pageX,
             starty: event.touches[0].pageY
             })
     },
+  //手指移动
     tapMove: function(event){
         this.setData({
             endx: event.touches[0].pageX,
             endy: event.touches[0].pageY
             })
     },
+  //触摸结束位置计算
     tapEnd: function(event){
+    //取横向坐标迁移值与纵向坐标迁移值
         var heng = (this.data.endx) ? (this.data.endx - this.data.startx) : 0;
         var shu = (this.data.endy) ? (this.data.endy - this.data.starty) : 0;
 
+    //迁移值大于5才视为用户有滑动意图
         if(Math.abs(heng) > 5 || Math.abs(shu) > 5){
+      //计算方向，heng>shu则为横向移动，反之为纵向移动
             var direction = (Math.abs(heng) > Math.abs(shu)) ? this.computeDir(1, heng):this.computeDir(0, shu);
+      //限制不能反向移动
             switch(direction){
             case 'left':
                 if(this.data.direction=='right')return;
@@ -102,6 +114,7 @@ Page({
                 break;
             default:
         }
+      //更改蛇移动的方向
         this.setData({
         startx:0,
         starty:0,
@@ -112,6 +125,7 @@ Page({
         
     }
     },
+  //若为横向移动，heng值大于0向右，小于零向左；纵向移动，shu值大于0为下，小于0为上
     computeDir: function(heng, num){
     if(heng) return (num > 0) ? 'right' : 'left';
     return (num > 0) ? 'bottom' : 'top';
@@ -120,7 +134,9 @@ Page({
         var x=Math.floor(Math.random()*this.data.rows);
         var y=Math.floor(Math.random()*this.data.cols);
         var ground= this.data.ground;
+    //事物颜色为2
         ground[x][y]=2;
+    //更新ground数据，存食物位置
         this.setData({
             ground:ground,
             food:[x,y]
