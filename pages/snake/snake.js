@@ -14,7 +14,7 @@ Page({
         cols:22,//操场大小
         snake:[],//存蛇
         food:[],//存食物
-        direction:'right',//方向,初识方向设置为right
+        direction:'',//方向,初识方向设置为right
         modalHidden: true,
         timer:''
    } ,
@@ -299,7 +299,7 @@ Page({
         snake:[],
             food:[],
             modalHidden: true,
-            direction:'right'
+            direction:''
     })
     this.onLoad();
     }
