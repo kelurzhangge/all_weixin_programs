@@ -56,8 +56,15 @@ Page({
    //蛇
    initSnake:function(len){
        for(var i=0;i<len;i++){
+            /*if (i == 0) {
+                this.data.ground[0][i]='tail';
+            } else */if (i == len-1) {
+                this.data.ground[0][i]='header';
+            } else {
+                this.data.ground[0][i]='body';
+            }
       //初始化蛇，蛇的颜色为1
-           this.data.ground[0][i]=1;
+           //this.data.ground[0][i]=1;
       //存蛇的坐标
            this.data.snake.push([0,i]);
        }
@@ -176,8 +183,15 @@ Page({
         var y=arr[len-1][1]-1;
         arr[len-1]=[x,y];
             this.checkGame(snakeTAIL);
-        for(var i=1;i<len;i++){
-            ground[arr[i][0]][arr[i][1]]=1;
+        for(var i=0;i<len;i++){
+            /*if (i == 0) {
+                ground[arr[i][0]][arr[i][1]]='tail';
+            } else */if (i == len-1) {
+                ground[arr[i][0]][arr[i][1]]='header';
+            } else {
+                ground[arr[i][0]][arr[i][1]]='body';
+            }
+            //ground[arr[i][0]][arr[i][1]]=1;
         } 
         
         this.setData({
@@ -203,8 +217,15 @@ Page({
         var y=arr[len-1][1]+1;
         arr[len-1]=[x,y];
         this.checkGame(snakeTAIL);
-        for(var i=1;i<len;i++){
-            ground[arr[i][0]][arr[i][1]]=1;
+        for(var i=0;i<len;i++){
+            /*if (i == 0) {
+                ground[arr[i][0]][arr[i][1]]='tail';
+            } else */if (i == len-1) {
+                ground[arr[i][0]][arr[i][1]]='header';
+            } else {
+                ground[arr[i][0]][arr[i][1]]='body';
+            }
+            //ground[arr[i][0]][arr[i][1]]=1;
 
         } 
         
@@ -244,8 +265,15 @@ Page({
         var y=arr[len-1][1];
         arr[len-1]=[x,y];
             this.checkGame(snakeTAIL);
-        for(var i=1;i<len;i++){
-            ground[arr[i][0]][arr[i][1]]=1;
+        for(var i=0;i<len;i++){
+            /*if (i == 0) {
+                ground[arr[i][0]][arr[i][1]]='tail';
+            } else */if (i == len-1) {
+                ground[arr[i][0]][arr[i][1]]='header';
+            } else {
+                ground[arr[i][0]][arr[i][1]]='body';
+            }
+            //ground[arr[i][0]][arr[i][1]]=1;
         } 
         this.setData({
             ground:ground,
@@ -272,8 +300,15 @@ Page({
         arr[len-1]=[x,y];
         this.checkGame(snakeTAIL);
         /*3.找到snake显示需要的点，并赋值1*/
-        for(var i=1;i<len;i++){
-            ground[arr[i][0]][arr[i][1]]=1;
+        for(var i=0;i<len;i++){
+            /*if (i == 0) {
+                ground[arr[i][0]][arr[i][1]]='tail';
+            } else */if (i == len-1) {
+                ground[arr[i][0]][arr[i][1]]='header';
+            } else {
+                ground[arr[i][0]][arr[i][1]]='body';
+            }
+            //ground[arr[i][0]][arr[i][1]]=1;
         } 
         this.setData({
             ground:ground,
@@ -285,8 +320,8 @@ Page({
         var arr=this.data.snake;
         var len=this.data.snake.length;
         var snakeHEAD=arr[len-1];
-        /*1.上下左右临界，限制在ground框中，rows和cols减1是为了一旦触发边界就弹框*/
-        if(snakeHEAD[0]<0||snakeHEAD[0]>=this.data.rows-1||snakeHEAD[1]>=this.data.cols-1||snakeHEAD[1]<0){
+        /*1.上下左右临界，限制在ground框中*/
+        if(snakeHEAD[0]<0||snakeHEAD[0]>=this.data.rows||snakeHEAD[1]>=this.data.cols||snakeHEAD[1]<0){
                 clearInterval(this.data.timer);
                     this.setData({
                     modalHidden: false,

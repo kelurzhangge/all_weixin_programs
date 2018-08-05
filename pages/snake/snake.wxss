@@ -44,7 +44,7 @@
     width:30rpx;
     height:30rpx;
     float: left;
-    background: #ccc;
+    /*background: #ccc;*/
 }
 .rows{
     width: 660rpx;
@@ -54,9 +54,9 @@
     width: 100%;
     height: 100%;
 }
-.block_1{
+/*.block_1{
     background:#f00;
 }
 .block_2{
     background:#0f0;
-}
+}*/

@@ -15,8 +15,32 @@
     </view>
     <view class="ground">
         <view wx:for="{{ground}}"  class="rows" wx:for-item="cols">
-            <view wx:for="{{cols}}" class="block block_{{item}}" >
-
+            <view wx:for="{{cols}}"> 
+                <view wx:if="{{item==0}}" class="block" style="background-image: url('/images/caocong.png');background-size: cover;">
+                    
+                </view>
+                <view wx:elif="{{item=='header'}}" >
+                    <view wx:if="{{direction=='bottom'}}" class="block" style="background-image: url('/images/snake_header.png');background-size: cover;transform: rotate(180deg);"/>
+                    <view wx:elif="{{direction=='right'}}" class="block" style="background-image: url('/images/snake_header.png');background-size: cover;transform: rotate(90deg);"/>
+                    <view wx:elif="{{direction=='top'}}" class="block" style="background-image: url('/images/snake_header.png');background-size: cover;"/>
+                    <view wx:elif="{{direction=='left'}}" class="block" style="background-image: url('/images/snake_header.png');background-size: cover;transform: rotate(270deg);"/>
+                    <view wx:else class="block" style="background-image: url('/images/snake_header.png');background-size: cover;transform: rotate(90deg);"/>
+                </view>
+                <view wx:elif="{{item=='body'}}">
+                    <view wx:if="{{direction=='bottom'}}" class="block" style="background-image: url('/images/snake_body.png');background-size: cover;transform: rotate(180deg);"/>
+                    <view wx:elif="{{direction=='right'}}" class="block" style="background-image: url('/images/snake_body.png');background-size: cover;transform: rotate(90deg);"/>
+                    <view wx:elif="{{direction=='top'}}" class="block" style="background-image: url('/images/snake_body.png');background-size: cover;"/>
+                    <view wx:elif="{{direction=='left'}}" class="block" style="background-image: url('/images/snake_body.png');background-size: cover;transform: rotate(270deg);"/>
+                    <view wx:else class="block" style="background-image: url('/images/snake_body.png');background-size: cover;transform: rotate(90deg);"/>
+                </view>
+                <!--<view wx:elif="{{item=='tail'}}">
+                    <view wx:if="{{direction=='bottom'}}" class="block" style="background-image: url('/images/snake_tail.png');background-size: cover;transform: rotate(180deg);"/>
+                    <view wx:elif="{{direction=='right'}}" class="block" style="background-image: url('/images/snake_tail.png');background-size: cover;transform: rotate(90deg);"/>
+                    <view wx:elif="{{direction=='top'}}" class="block" style="background-image: url('/images/snake_tail.png');background-size: cover;"/>
+                    <view wx:elif="{{direction=='left'}}" class="block" style="background-image: url('/images/snake_tail.png');background-size: cover;transform: rotate(270deg);"/>
+                    <view wx:else class="block" style="background-image: url('/images/snake_tail.png');background-size: cover;transform: rotate(90deg);"/>
+                </view>-->
+                <view wx:elif="{{item==2}}" class="block" style="background-image: url('/images/qingwa.png');background-size: cover;"/>
             </view>
         </view>
     </view>
