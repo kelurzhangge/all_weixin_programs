@@ -255,7 +255,7 @@ Page({
         return true;
     },
     changeBottom:function(){
-        
+        /*1.蛇的红点框先一下一下的消失start*/
         var arr=this.data.snake;
         var len=this.data.snake.length;
         var snakeHEAD=arr[len-1];
@@ -266,10 +266,12 @@ Page({
         for(var i=0;i<len-1;i++){
                 arr[i]=arr[i+1];   
         };
+        /*2.找到往前走的这一步(方块)的位置(x,y)*/
         var x=arr[len-1][0]+1;
         var y=arr[len-1][1];
         arr[len-1]=[x,y];
         this.checkGame(snakeTAIL);
+        /*3.找到snake显示需要的点，并赋值1*/
         for(var i=1;i<len;i++){
             ground[arr[i][0]][arr[i][1]]=1;
         } 
@@ -283,12 +285,14 @@ Page({
         var arr=this.data.snake;
         var len=this.data.snake.length;
         var snakeHEAD=arr[len-1];
-        if(snakeHEAD[0]<0||snakeHEAD[0]>=this.data.rows||snakeHEAD[1]>=this.data.cols||snakeHEAD[1]<0){
+        /*1.上下左右临界，限制在ground框中，rows和cols减1是为了一旦触发边界就弹框*/
+        if(snakeHEAD[0]<0||snakeHEAD[0]>=this.data.rows-1||snakeHEAD[1]>=this.data.cols-1||snakeHEAD[1]<0){
                 clearInterval(this.data.timer);
                     this.setData({
                     modalHidden: false,
                         })  
         }
+        /*2.判断蛇尾和蛇身是否等于蛇头位置*/
         for(var i=0;i<len-1;i++){
             if(arr[i][0]==snakeHEAD[0]&&arr[i][1]==snakeHEAD[1]){
                 clearInterval(this.data.timer);
@@ -298,7 +302,7 @@ Page({
             }
         }
         if(snakeHEAD[0]==this.data.food[0]&&snakeHEAD[1]==this.data.food[1]){
-            arr.unshift(snakeTAIL);
+            arr.unshift(snakeTAIL);//在arr开头增加一个元素，蛇身变长一个方格
             this.setData({
                 score:this.data.score+10
             });
