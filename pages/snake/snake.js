@@ -13,6 +13,8 @@ Page({
         rows:28,
         cols:22,//操场大小
         snake:[],//存蛇
+        speed:500,//蛇速度
+        speeded:100,//加速后的速度
         food:[],//存食物
         direction:'',//方向,初识方向设置为right
         modalHidden: true,
@@ -30,7 +32,7 @@ Page({
         this.initGround(this.data.rows,this.data.cols);//初始化操场
         this.initSnake(3);//初始化蛇
         this.creatFood();//初始化食物
-        this.move();//蛇移动
+        this.move(this.data.speed);//蛇移动
    },
    //计分器
     storeScore:function(){
@@ -70,7 +72,7 @@ Page({
        }
    },
    //移动函数
-   move:function(){
+   move:function(speed){
        var that=this;
     //设定定时器
        this.data.timer=setInterval(function(){
@@ -78,7 +80,7 @@ Page({
             that.setData({
                 ground: that.data.ground
             })
-       }, 400);
+       }, speed);
 
    },
   //手指触摸起始位置
@@ -90,6 +92,12 @@ Page({
     },
   //手指移动
     tapMove: function(event){
+      //长按操作。。。
+      // 停止setInterval循环
+      clearInterval(this.data.timer)
+      // 设置长按速度
+      this.move(this.data.speeded)
+
         this.setData({
             endx: event.touches[0].pageX,
             endy: event.touches[0].pageY
@@ -97,6 +105,10 @@ Page({
     },
   //触摸结束位置计算
     tapEnd: function(event){
+    // 停止setInterval循环
+      clearInterval(this.data.timer)
+    // 恢复加速前的速度
+      this.move(this.data.speed)
     //取横向坐标迁移值与纵向坐标迁移值
         var heng = (this.data.endx) ? (this.data.endx - this.data.startx) : 0;
         var shu = (this.data.endy) ? (this.data.endy - this.data.starty) : 0;

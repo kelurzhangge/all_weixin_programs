@@ -1,5 +1,6 @@
 <!--snake.wxml-->
-<view class="control" bindtouchstart="tapStart" bindtouchmove="tapMove" bindtouchend="tapEnd" >
+<view class="control" bindtouchstart="tapStart" bindtouchmove="tapMove" bindtouchend="tapEnd" 
+bindlongtap="tapMove">
 
 
     <view class="score">
