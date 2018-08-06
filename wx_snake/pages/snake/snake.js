@@ -28,11 +28,25 @@ Page({
         this.setData({
         maxscore:maxscore
         });
-        
+    
         this.initGround(this.data.rows,this.data.cols);//初始化操场
         this.initSnake(3);//初始化蛇
         this.creatFood();//初始化食物
         this.move(this.data.speed);//蛇移动
+        this.playbgm();//播放背景音乐
+   },
+   //背景音乐
+   playbgm: function() {
+        const innerAudioContext = wx.createInnerAudioContext()
+        innerAudioContext.autoplay = true
+        innerAudioContext.src = 'musics/bgm.wav'
+        innerAudioContext.onPlay(() => {
+            console.log('开始播放')
+        })
+        innerAudioContext.onError((res) => {
+            console.log(res.errMsg)
+            console.log(res.errCode)
+        })
    },
    //计分器
     storeScore:function(){
