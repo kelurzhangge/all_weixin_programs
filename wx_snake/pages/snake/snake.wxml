@@ -17,22 +17,44 @@ bindlongtap="tapMove">
     <view class="ground">
         <view wx:for="{{ground}}"  class="rows" wx:for-item="cols">
             <view wx:for="{{cols}}"> 
-                <view wx:if="{{item==0}}" class="block" style="background-image: url('/images/caocong.png');background-size: cover;">
-                    
+                
+                <view wx:if="{{item==0}}" class="block" >
+                    <image style="width: 100%; height:100%" mode="aspectFill" src="http://wx4.sinaimg.cn/large/8f5ba10bly1fu1fxmidwpj20bx09lq40.jpg"/>
                 </view>
+                
                 <view wx:elif="{{item=='header'}}" >
-                    <view wx:if="{{direction=='bottom'}}" class="block" style="background-image: url('/images/snake_header.png');background-size: cover;transform: rotate(180deg);"/>
-                    <view wx:elif="{{direction=='right'}}" class="block" style="background-image: url('/images/snake_header.png');background-size: cover;transform: rotate(90deg);"/>
-                    <view wx:elif="{{direction=='top'}}" class="block" style="background-image: url('/images/snake_header.png');background-size: cover;"/>
-                    <view wx:elif="{{direction=='left'}}" class="block" style="background-image: url('/images/snake_header.png');background-size: cover;transform: rotate(270deg);"/>
-                    <view wx:else class="block" style="background-image: url('/images/snake_header.png');background-size: cover;transform: rotate(90deg);"/>
+                    <view wx:if="{{direction=='bottom'}}" class="block">
+                        <image style="width: 100%; height:100%" mode="aspectFill" src="http://wx3.sinaimg.cn/large/8f5ba10bly1fu1ho62kudj200u00uq2r.jpg"/>
+                    </view>
+                    <view wx:elif="{{direction=='right'}}" class="block">
+                        <image style="width: 100%; height:100%" mode="aspectFill" src="http://wx3.sinaimg.cn/large/8f5ba10bly1fu1ho69hngj200u00uq2r.jpg"/>
+                    </view>
+                    <view wx:elif="{{direction=='top'}}" class="block">
+                        <image style="width: 100%; height:100%" mode="aspectFill" src="http://wx3.sinaimg.cn/large/8f5ba10bly1fu1ho6bmr5j200u00ujr7.jpg"/>
+                    </view>
+                    <view wx:elif="{{direction=='left'}}" class="block">
+                        <image style="width: 100%; height:100%" mode="aspectFill" src="http://wx4.sinaimg.cn/large/8f5ba10bly1fu1ho69hc0j200u00uq2r.jpg"/>
+                    </view>
+                    <view wx:else class="block">
+                        <image style="width: 100%; height:100%" mode="aspectFill" src="http://wx3.sinaimg.cn/large/8f5ba10bly1fu1ho69hngj200u00uq2r.jpg"/>
+                    </view>
                 </view>
                 <view wx:elif="{{item=='body'}}">
-                    <view wx:if="{{direction=='bottom'}}" class="block" style="background-image: url('/images/snake_body.png');background-size: cover;transform: rotate(180deg);"/>
-                    <view wx:elif="{{direction=='right'}}" class="block" style="background-image: url('/images/snake_body.png');background-size: cover;transform: rotate(90deg);"/>
-                    <view wx:elif="{{direction=='top'}}" class="block" style="background-image: url('/images/snake_body.png');background-size: cover;"/>
-                    <view wx:elif="{{direction=='left'}}" class="block" style="background-image: url('/images/snake_body.png');background-size: cover;transform: rotate(270deg);"/>
-                    <view wx:else class="block" style="background-image: url('/images/snake_body.png');background-size: cover;transform: rotate(90deg);"/>
+                    <view wx:if="{{direction=='bottom'}}" class="block">
+                        <image style="width: 100%; height:100%" mode="aspectFill" src="http://wx4.sinaimg.cn/large/8f5ba10bly1fu1hh8vqagj200u00ua9u.jpg"/>
+                    </view>
+                    <view wx:elif="{{direction=='right'}}" class="block">
+                        <image style="width: 100%; height:100%" mode="aspectFill" src="http://wx3.sinaimg.cn/large/8f5ba10bly1fu1hh8vrpxj200u00ua9u.jpg"/>
+                    </view>
+                    <view wx:elif="{{direction=='top'}}" class="block">
+                        <image style="width: 100%; height:100%" mode="aspectFill" src="http://wx4.sinaimg.cn/large/8f5ba10bly1fu1hh8vyk1j200u00ua9u.jpg"/>
+                    </view>
+                    <view wx:elif="{{direction=='left'}}" class="block">
+                        <image style="width: 100%; height:100%" mode="aspectFill" src="http://wx4.sinaimg.cn/large/8f5ba10bly1fu1hh8vrkhj200u00ua9u.jpg"/>
+                    </view>
+                    <view wx:else class="block">
+                        <image style="width: 100%; height:100%" mode="aspectFill" src="http://wx3.sinaimg.cn/large/8f5ba10bly1fu1hh8vrpxj200u00ua9u.jpg"/>
+                    </view>
                 </view>
                 <!--<view wx:elif="{{item=='tail'}}">
                     <view wx:if="{{direction=='bottom'}}" class="block" style="background-image: url('/images/snake_tail.png');background-size: cover;transform: rotate(180deg);"/>
@@ -41,7 +63,9 @@ bindlongtap="tapMove">
                     <view wx:elif="{{direction=='left'}}" class="block" style="background-image: url('/images/snake_tail.png');background-size: cover;transform: rotate(270deg);"/>
                     <view wx:else class="block" style="background-image: url('/images/snake_tail.png');background-size: cover;transform: rotate(90deg);"/>
                 </view>-->
-                <view wx:elif="{{item==2}}" class="block" style="background-image: url('/images/qingwa.png');background-size: cover;"/>
+                <view wx:elif="{{item==2}}" class="block">
+                    <image style="width: 100%; height:100%" mode="aspectFill" src="http://wx2.sinaimg.cn/large/8f5ba10bly1fu1if48zn7j2021029jre.jpg"/>
+                </view>
             </view>
         </view>
     </view>
