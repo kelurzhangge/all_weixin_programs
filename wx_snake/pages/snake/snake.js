@@ -213,9 +213,9 @@ Page({
             /*if (i == 0) {
                 ground[arr[i][0]][arr[i][1]]='tail';
             } else */if (i == len-1) {
-                ground[arr[i][0]][arr[i][1]]='header';
+                ground[arr[i][0]][arr[i][1]]='header_'+this.data.direction;
             } else {
-                ground[arr[i][0]][arr[i][1]]='body';
+                ground[arr[i][0]][arr[i][1]]='body_'+this.data.direction;
             }
             //ground[arr[i][0]][arr[i][1]]=1;
         } 
@@ -247,9 +247,9 @@ Page({
             /*if (i == 0) {
                 ground[arr[i][0]][arr[i][1]]='tail';
             } else */if (i == len-1) {
-                ground[arr[i][0]][arr[i][1]]='header';
+                ground[arr[i][0]][arr[i][1]]='header_'+this.data.direction;
             } else {
-                ground[arr[i][0]][arr[i][1]]='body';
+                ground[arr[i][0]][arr[i][1]]='body_'+this.data.direction;
             }
             //ground[arr[i][0]][arr[i][1]]=1;
 
@@ -295,9 +295,9 @@ Page({
             /*if (i == 0) {
                 ground[arr[i][0]][arr[i][1]]='tail';
             } else */if (i == len-1) {
-                ground[arr[i][0]][arr[i][1]]='header';
+                ground[arr[i][0]][arr[i][1]]='header_'+this.data.direction;
             } else {
-                ground[arr[i][0]][arr[i][1]]='body';
+                ground[arr[i][0]][arr[i][1]]='body_'+this.data.direction;
             }
             //ground[arr[i][0]][arr[i][1]]=1;
         } 
@@ -330,9 +330,9 @@ Page({
             /*if (i == 0) {
                 ground[arr[i][0]][arr[i][1]]='tail';
             } else */if (i == len-1) {
-                ground[arr[i][0]][arr[i][1]]='header';
+                ground[arr[i][0]][arr[i][1]]='header_'+this.data.direction;
             } else {
-                ground[arr[i][0]][arr[i][1]]='body';
+                ground[arr[i][0]][arr[i][1]]='body_'+this.data.direction;
             }
             //ground[arr[i][0]][arr[i][1]]=1;
         } 
