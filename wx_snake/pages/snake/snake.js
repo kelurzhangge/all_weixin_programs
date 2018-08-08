@@ -37,16 +37,17 @@ Page({
    },
    //背景音乐
    playbgm: function() {
-        const innerAudioContext = wx.createInnerAudioContext()
-        innerAudioContext.autoplay = true
-        innerAudioContext.src = 'musics/bgm.wav'
-        innerAudioContext.onPlay(() => {
+        this.innerAudioContext = wx.createInnerAudioContext()
+        this.innerAudioContext.autoplay = true
+        this.innerAudioContext.src = 'http://jsdx.sc.chinaz.com/Files/DownLoad/sound1/201610/7895.wav'
+        /*this.innerAudioContext.onPlay(() => {
             console.log('开始播放')
         })
-        innerAudioContext.onError((res) => {
+
+        this.innerAudioContext.onError((res) => {
             console.log(res.errMsg)
             console.log(res.errCode)
-        })
+        })*/
    },
    //计分器
     storeScore:function(){
@@ -349,9 +350,12 @@ Page({
         /*1.上下左右临界，限制在ground框中*/
         if(snakeHEAD[0]<0||snakeHEAD[0]>=this.data.rows||snakeHEAD[1]>=this.data.cols||snakeHEAD[1]<0){
                 clearInterval(this.data.timer);
-                    this.setData({
-                    modalHidden: false,
-                        })  
+                this.setData({
+                modalHidden: false,
+                    })  
+                //停止播放背景音乐
+                this.innerAudioContext.stop();
+                    
         }
         /*2.判断蛇尾和蛇身是否等于蛇头位置*/
         for(var i=0;i<len-1;i++){
@@ -360,6 +364,8 @@ Page({
                     this.setData({
                         modalHidden: false,
                     })
+                    //停止播放背景音乐
+                    this.innerAudioContext.stop();
             }
         }
         if(snakeHEAD[0]==this.data.food[0]&&snakeHEAD[1]==this.data.food[1]){
@@ -382,6 +388,7 @@ Page({
             modalHidden: true,
             direction:''
     })
+    
     this.onLoad();
     }
 

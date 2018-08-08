@@ -1,8 +1,6 @@
 <!--snake.wxml-->
 <view class="control" bindtouchstart="tapStart" bindtouchmove="tapMove" bindtouchend="tapEnd" 
 bindlongtap="tapMove">
-
-
     <view class="score">
         <view class="title">snake</view>
         <view class="scoredetail">
@@ -17,16 +15,6 @@ bindlongtap="tapMove">
     <view class="ground">
         <view wx:for="{{ground}}"  class="rows" wx:for-item="cols">
             <view wx:for="{{cols}}" class="block block_{{item}}"> 
-                <!--<view wx:if="{{item=='header'}}" >
-                    <view class="block block_{{item}} snake_{{direction}}"></view>
-                </view>
-                <view wx:elif="{{item=='body'}}">
-                    <view class="block block_{{item}} snake_{{direction}}"></view>
-                </view>
-                <view wx:else>
-                    <view class="block block_{{item}}"></view>
-                </view>
-                -->
             </view>
         </view>
     </view>
