@@ -37,17 +37,25 @@ Page({
    },
    //背景音乐
    playbgm: function() {
-        this.innerAudioContext = wx.createInnerAudioContext()
+        var res = wx.getSystemInfoSync()
+        console.log("platform is "+res.platform)
+        if (res.platform == 'ios') {
+           this.innerAudioContext = wx.getBackgroundAudioManager()
+        } else {
+           this.innerAudioContext = wx.createInnerAudioContext();
+        }
+
+        this.innerAudioContext.title= 'bg-music'
         this.innerAudioContext.autoplay = true
         this.innerAudioContext.src = 'http://jsdx.sc.chinaz.com/Files/DownLoad/sound1/201610/7895.wav'
-        /*this.innerAudioContext.onPlay(() => {
+        this.innerAudioContext.onPlay(() => {
             console.log('开始播放')
         })
 
         this.innerAudioContext.onError((res) => {
             console.log(res.errMsg)
             console.log(res.errCode)
-        })*/
+        })
    },
    //计分器
     storeScore:function(){
