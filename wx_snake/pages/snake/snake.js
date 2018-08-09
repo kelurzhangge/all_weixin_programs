@@ -23,7 +23,7 @@ Page({
    } ,
    onLoad:function(params){
         console.log(params)
-        console.log(params.have_download+","+params.savedFilePath)
+        //console.log(params.have_download+","+params.savedFilePath)
     //取缓存中的最高分
        var maxscore = wx.getStorageSync('maxscore');
        if(!maxscore) maxscore = 0
@@ -35,7 +35,7 @@ Page({
         this.initSnake(3);//初始化蛇
         this.creatFood();//初始化食物
         this.move(this.data.speed);//蛇移动
-        //this.playbgm(params);//播放背景音乐
+        this.playbgm(params);//播放背景音乐
    },
    //背景音乐
    playbgm: function(params) {
@@ -421,16 +421,27 @@ Page({
         
     },
     modalChange:function(){
-    this.setData({
-            score: 0,
-        ground:[],
-        snake:[],
-            food:[],
-            modalHidden: true,
-            direction:''
-    })
+        this.setData({
+                score: 0,
+            ground:[],
+            snake:[],
+                food:[],
+                modalHidden: true,
+                direction:''
+        })
     
-    this.onLoad();
+        //this.onLoad();
+        var bgm_file_path = wx.getStorageSync('bgm_file_path');
+        if (bgm_file_path) {
+          wx.redirectTo({
+            url: '/pages/snake/snake?have_download=1&savedFilePath='+bgm_file_path
+          })
+        }  else {
+            wx.redirectTo({
+                url: '/pages/snake/snake?have_download=0'
+            })
+        }
+        
     }
 
   
