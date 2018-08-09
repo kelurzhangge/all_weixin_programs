@@ -1,5 +1,6 @@
 //snake.js
 var app = getApp();
+var innerAudioContext
 
 Page({
    data:{
@@ -20,8 +21,9 @@ Page({
         modalHidden: true,
         timer:''
    } ,
-   onLoad:function(){
-        
+   onLoad:function(params){
+        console.log(params)
+        console.log(params.have_download+","+params.savedFilePath)
     //取缓存中的最高分
        var maxscore = wx.getStorageSync('maxscore');
        if(!maxscore) maxscore = 0
@@ -33,29 +35,37 @@ Page({
         this.initSnake(3);//初始化蛇
         this.creatFood();//初始化食物
         this.move(this.data.speed);//蛇移动
-        this.playbgm();//播放背景音乐
+        this.playbgm(params);//播放背景音乐
    },
    //背景音乐
-   playbgm: function() {
-        var res = wx.getSystemInfoSync()
-        console.log("platform is "+res.platform)
-        if (res.platform == 'ios') {
-           this.innerAudioContext = wx.getBackgroundAudioManager()
+   playbgm: function(params) {
+        if (params.have_download == '1') {
+            console.log("have_download is 1")
+            var res = wx.getSystemInfoSync()
+            console.log("platform is "+res.platform)
+            if (res.platform == 'ios') {
+                innerAudioContext = wx.getBackgroundAudioManager();
+            } else {
+                innerAudioContext = wx.createInnerAudioContext();
+            }
+
+            innerAudioContext.title= 'bg-music'
+            innerAudioContext.autoplay = true
+            innerAudioContext.src = params.savedFilePath
         } else {
-           this.innerAudioContext = wx.createInnerAudioContext();
+            console.log("have_download is 0")
+            var res = wx.getSystemInfoSync()
+            console.log("platform is "+res.platform)
+            if (res.platform == 'ios') {
+               innerAudioContext = wx.getBackgroundAudioManager();
+            } else {
+               innerAudioContext = wx.createInnerAudioContext();
+            }
+
+            innerAudioContext.title= 'bg-music'
+            innerAudioContext.autoplay = true
+            innerAudioContext.src = 'http://jsdx.sc.chinaz.com/Files/DownLoad/sound1/201610/7895.wav'
         }
-
-        this.innerAudioContext.title= 'bg-music'
-        this.innerAudioContext.autoplay = true
-        this.innerAudioContext.src = 'http://jsdx.sc.chinaz.com/Files/DownLoad/sound1/201610/7895.wav'
-        this.innerAudioContext.onPlay(() => {
-            console.log('开始播放')
-        })
-
-        this.innerAudioContext.onError((res) => {
-            console.log(res.errMsg)
-            console.log(res.errCode)
-        })
    },
    //计分器
     storeScore:function(){
@@ -362,7 +372,7 @@ Page({
                 modalHidden: false,
                     })  
                 //停止播放背景音乐
-                this.innerAudioContext.stop();
+                innerAudioContext.stop();
                     
         }
         /*2.判断蛇尾和蛇身是否等于蛇头位置*/
@@ -373,7 +383,7 @@ Page({
                         modalHidden: false,
                     })
                     //停止播放背景音乐
-                    this.innerAudioContext.stop();
+                    innerAudioContext.stop();
             }
         }
         if(snakeHEAD[0]==this.data.food[0]&&snakeHEAD[1]==this.data.food[1]){

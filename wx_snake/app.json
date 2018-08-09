@@ -1,7 +1,7 @@
 {
   "pages":[
-    "pages/snake/snake",
     "pages/index/index",
+    "pages/snake/snake",
     "pages/logs/logs"
   ],
   "window":{
