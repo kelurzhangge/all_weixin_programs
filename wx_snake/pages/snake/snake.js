@@ -35,7 +35,7 @@ Page({
         this.initSnake(3);//初始化蛇
         this.creatFood();//初始化食物
         this.move(this.data.speed);//蛇移动
-        this.playbgm(params);//播放背景音乐
+        //this.playbgm(params);//播放背景音乐
    },
    //背景音乐
    playbgm: function(params) {
@@ -183,10 +183,33 @@ Page({
     return (num > 0) ? 'bottom' : 'top';
     },
     creatFood:function(){
-        var x=Math.floor(Math.random()*this.data.rows);
-        var y=Math.floor(Math.random()*this.data.cols);
+        for(;;) {
+            var x=Math.floor(Math.random()*this.data.rows);
+            var y=Math.floor(Math.random()*this.data.cols);
+
+            var arr = this.data.snake;
+            var len=this.data.snake.length;
+            var is_fold_flag = 0;//是否重叠标记
+            for(var i=0;i<len;i++){
+                console.log("arr[i] is"+arr[i][0]+arr[i][1]); 
+                if (x == arr[i][0] && y == arr[i][1]) {//食物与蛇的位置重叠，继续获取新的位置
+                    continue;
+                } else {
+                    is_fold_flag++;
+                }
+            };
+            /*console.log("is_fold_flag is"+is_fold_flag)
+            console.log("food is ("+x+","+y+")")
+            console.log("snake is "+this.data.snake)
+            console.log("snake length is "+this.data.snake.length)*/
+            if (is_fold_flag == len) { //食物位置没有和蛇的位置重叠，则跳出，说明找到了合适的位置
+                break;
+            }
+        }
+        
         var ground= this.data.ground;
-    //事物颜色为2
+        
+    //食物颜色为2
         ground[x][y]=2;
     //更新ground数据，存食物位置
         this.setData({
