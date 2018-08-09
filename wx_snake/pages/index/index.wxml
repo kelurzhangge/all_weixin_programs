@@ -1,4 +1,4 @@
 <!--index.wxml-->
-<view >
+<view>
   <progress percent="{{progress}}" show-info="true" color="red" stroke-width="50" activeColor="green" backgroundColor="#ccc" />
 </view>
