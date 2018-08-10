@@ -1,0 +1,64 @@
+<!--pages/books/detailed/detailed.wxml-->
+<view style='background:#F8F3E9;padding-bottom:30rpx;'>
+  <view class='header'>
+    <view class='cover'>
+      <image src='http:{{info.cover}}'></image>
+    </view>
+    <text style='font-weight:600;color:#000;'>{{info.title}}</text>
+    <text style='color:#666;padding-left:40rpx;padding-right:40rpx;font-size:28rpx;line-height:40rpx;'>{{info.slogan}}</text>
+  </view>
+  <view class='info'>
+    <view class='info-top'>
+      <view class='info-top-text'>
+        <text class='subtitle'>{{info.type}}</text>
+        <text class='subtitle-bottom'>类型</text>
+      </view>
+      <view class='info-top-text'>
+        <text class='subtitle'>{{info.actor}}</text>
+        <text class='subtitle-bottom'>作者</text>
+      </view>
+      <view class='info-top-text'>
+        <text class='subtitle'>{{info.status}}</text>
+        <text class='subtitle-bottom'>状态</text>
+      </view>
+    </view>
+    <view class='info-content'>{{info.des}}</view>
+    <view class='info-table'>
+      <view class='info-table-title' bindtap='listshow'>目录</view>
+      <view class='info-table-text'>
+        <navigator url="/pages/books/read/read?url={{info.updateurl}}" hover-class="navigator-hover">
+          {{info.updatetime}}更新{{info.updatetext}}
+        </navigator>
+      </view>
+    </view>
+  </view>
+  <view class='read-container'>
+    <view class='read-icon'>章节试读</view>
+    <view class='read-title'>{{content.title}}</view>
+    <view class='read-content' style="height:{{height}};">{{content.content}}</view>
+    <view class='read-develop' bindtap='show' hidden='{{isshow}}'>展开</view>
+    <view class='read-btn' hidden='{{!isshow}}'>
+      <navigator url="/pages/books/read/read?url={{content.next}}" hover-class="navigator-hover">继续阅读</navigator>
+    </view>
+  </view>
+</view>
+<view class='modal' hidden='{{list_show}}'>
+  <scroll-view class='list' scroll-y>
+    <view class='loading' hidden='{{loading_show}}'> 
+      <image src='../../img/5-121204193934-50.gif'></image>
+    </view>
+    <view class='list-item' wx:for='{{list}}'>
+      <view class='roll'>{{item.title}}</view>
+      <view class='roll-content' wx:for='{{item.content}}'>
+        <navigator url="/pages/books/read/read?url={{item.url}}" hover-class="navigator-hover">
+          <view class='list-title'>{{item.title}}</view>
+          <view class='list-time'>{{item.time}}</view>
+        </navigator>
+      </view>
+    </view>
+  </scroll-view>
+  <view class='close' bindtap='listclose'></view>
+</view>
+<view class='detaild-loading' hidden='{{detaild_loading_show}}'> 
+  <image src='../../img/5-121204193934-50.gif'></image>
+</view>

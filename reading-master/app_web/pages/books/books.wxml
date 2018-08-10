@@ -1,0 +1,92 @@
+<!--pages/books/books.wxml-->
+<view class='header'>
+  <view class='header-tab'>
+    <view class='header-tab-btn'>男生</view>
+    <view class='header-tab-btn'>女生</view>
+  </view>
+  <view class='search'>
+    <navigator url="/pages/books/search/search?title=navigate" hover-class="navigator-hover">
+      <icon type='search' size='20' color='red'></icon>
+    </navigator>
+  </view>
+</view>
+<view class='main'>
+  <text class='title'>24小时热销</text>
+  <view class='wrap-container'>
+    <view class='wrap-box'>
+      <swiper autoplay='true' circular='true' next-margin='6px' duration='50'>
+        <swiper-item wx:for='{{wrap.wrap}}'>
+          <image class='wrap-bg' src='http:{{item.cover}}'></image>
+        </swiper-item>
+      </swiper>
+      <view class='wrap'>
+        <view class='wrap-text'>
+          <navigator url="/pages/books/detailed/detailed?url={{wrap.wrap[0].url}}" hover-class="navigator-hover">
+              <view class='wrap-text-row'><view class='wrap-text-box'><text style='color:#fff;font-size:24rpx;' hidden='{{zindex[0]}}'>▶</text></view>{{wrap.wrap[0].title}}<text style='color:#999999;font-size:28rpx;margin-left:30rpx;'>{{wrap.wrap[0].actor}}</text></view>
+          </navigator>
+          <navigator url="/pages/books/detailed/detailed?url={{wrap.wrap[1].url}}" hover-class="navigator-hover">
+              <view class='wrap-text-row'><view class='wrap-text-box'><text style='color:#fff;font-size:24rpx;' hidden='{{zindex[1]}}'>▶</text></view>{{wrap.wrap[1].title}}<text style='color:#999999;font-size:28rpx;margin-left:30rpx;'>{{wrap.wrap[1].actor}}</text></view>
+          </navigator>
+          <navigator url="/pages/books/detailed/detailed?url={{wrap.wrap[2].url}}" hover-class="navigator-hover">
+              <view class='wrap-text-row'><view class='wrap-text-box'><text style='color:#fff;font-size:24rpx;' hidden='{{zindex[2]}}'>▶</text></view>{{wrap.wrap[2].title}}<text style='color:#999999;font-size:28rpx;margin-left:30rpx;'>{{wrap.wrap[2].actor}}</text></view>
+          </navigator>
+        </view>
+        <swiper class='wrap-img' autoplay='true' circular='true' next-margin='10px' duration='30' bindchange='curent' interval='3000'>
+          <swiper-item wx:for='{{wrap.wrap}}'>
+            <navigator url="/pages/books/detailed/detailed?url={{item.url}}" hover-class="navigator-hover">
+              <image src='http:{{item.cover}}'></image>
+            </navigator>
+          </swiper-item>
+        </swiper>
+      </view>
+    </view>
+    <scroll-view class='wrap-bottom' scroll-x>
+      <view class='books' wx:for='{{wrap.wrapbox}}'>
+        <navigator url="/pages/books/detailed/detailed?url={{item.url}}" hover-class="navigator-hover">
+          <view class='books-cover'>
+            <image src='http:{{item.cover}}' lazy-load='true'></image>
+          </view>
+          <text style='color:#333;font-size:30rpx;'>{{item.title}}</text>
+          <text style='color:#666;font-size:28rpx;'>{{item.actor}}</text>
+        </navigator>
+      </view>
+    </scroll-view>
+  </view>
+  <text class='title'>限时免费</text>
+  <text class='countdown'></text>
+  <scroll-view class='free-container' scroll-x>
+    <view class='books' wx:for='{{free}}'>
+      <navigator url="/pages/books/detailed/detailed?url={{item.url}}" hover-class="navigator-hover">
+        <view class='books-cover'>
+          <image src='http:{{item.cover}}' lazy-load='true'></image>
+        </view>
+        <text style='color:#333;font-size:28rpx;'>{{item.title}}</text>
+        <text style='color:red;font-size:24rpx;'>免费</text>
+      </navigator>
+    </view>
+  </scroll-view>
+  <text class='title'>周推荐</text>
+  <scroll-view class='week-container' scroll-x>
+    <view class='books' wx:for='{{week}}'>
+      <navigator url="/pages/books/detailed/detailed?url={{item.url}}" hover-class="navigator-hover">
+        <view class='books-cover'>
+          <image src='http:{{item.cover}}' lazy-load='true'></image>
+        </view>
+        <text style='color:#333;font-size:28rpx;'>{{item.title}}</text>
+        <text style='color:#666;font-size:24rpx;'>{{item.actor}}</text>
+      </navigator>
+    </view>
+  </scroll-view>
+  <text class='title'>签约作家新书</text>
+  <scroll-view class='writer-container' scroll-x>
+    <view class='books' wx:for='{{writer}}'>
+      <navigator url="/pages/books/detailed/detailed?url={{item.url}}" hover-class="navigator-hover">
+        <view class='books-cover'>
+          <image src='http:{{item.cover}}'></image>
+        </view>
+        <text style='color:#333;font-size:28rpx;'>{{item.title}}</text>
+        <text style='color:#666;font-size:24rpx;'>{{item.actor}}</text>
+      </navigator>
+    </view>
+  </scroll-view>
+</view>
