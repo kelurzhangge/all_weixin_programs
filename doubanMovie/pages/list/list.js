@@ -56,6 +56,6 @@ Page({
 
   //页面准备完成
   onReady() {
-    wx.setNavigationBarTitle({ title: this.data.title + ' << 电影 << 豆瓣' })
+    wx.setNavigationBarTitle({ title: this.data.title + ' « 电影 « 豆瓣' })
   }
 })

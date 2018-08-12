@@ -18,11 +18,11 @@ const douban = require('../../libraries/douban.js')
  			.then(d => {
  				//console.log("iamhere before setData ")
  				this.setData({ country: d.countries, title: d.title, movie: d, loading: false })
- 				wx.setNavigationBarTitle({ title: this.data.title + ' << 电影 << 豆瓣' })
+ 				wx.setNavigationBarTitle({ title: this.data.title + ' « 电影 « 豆瓣' })
  			})
  			.catch(e => {
  				this.setData({ title: '获取数据异常', movie: {}, loading: false })
- 				wx.setNavigationBarTitle({ title: this.data.title + ' << 电影 << 豆瓣' })
+ 				wx.setNavigationBarTitle({ title: this.data.title + ' « 电影 « 豆瓣' })
  				console.error(e)
  			})
  		
