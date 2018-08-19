@@ -8,6 +8,7 @@
 > pip install flask<br>
 > pip install requests<br>
 > pip install BeautifulSoup<br>
+> 这块还需要加上pip install bs4(因为如果没有这句的话，运行的时候会报错“from bs4 import BeautifulSoup”）
 #### run
 > 设置小程序为开发模式，设置不校验域名以及https证书<br>
 > cd app_server<br>
