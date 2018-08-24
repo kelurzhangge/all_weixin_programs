@@ -10,3 +10,7 @@
    2.2 这个网站还有一些其他的html+js的游戏实例
    
        http://www.script-tutorials.com/html5-game-development-lesson-6/
+       
+   2.3 游戏手柄的代码实例地址：
+   
+      https://github.com/caibou/RockerView
