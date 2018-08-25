@@ -137,11 +137,15 @@ export default class Main {
    * @param {Number} x: 手指的X轴坐标
    * @param {Number} y: 手指的Y轴坐标
    * @return {Boolean}: 用于标识手指是否在方向键的上键的布尔值
+   * 下面的数据都是通过界面中点击边界点并打印log获取数据得到的，会有一定的误差存在。
    * (16, 243)  (59, 243)  (59, 275)  (16, 275)   左上开始，顺时针，矩形的四个点坐标，手指坐标在这个范围内代表向左
    * (59, 200)  (93, 200)  (93, 243)  (59, 243)   左上开始，顺时针，矩形的四个点坐标，手指坐标在这个范围内代表向上
    * (93, 243)  (134,243)  (134,275)  (93, 275)   左上开始，顺时针，矩形的四个点坐标，手指坐标在这个范围内代表向右
    * (59, 275)  (93, 275)  (93, 314)  (59, 314)   左上开始，顺时针，矩形的四个点坐标，手指坐标在这个范围内代表向下
    * 1-->上，2-->下， 3-->左, 4-->右
+   * 最上面的y坐标：172， 最下面的y坐标：227， 最左边的x坐标：589， 最右边的x坐标：645     手指坐标在这个范围内代表A区域
+   * 最上面的y坐标：228， 最下面的y坐标：284， 最左边的x坐标：531， 最右边的x坐标：588     手指坐标在这个范围内代表B区域
+   * 最上面的y坐标：282， 最下面的y坐标：338， 最左边的x坐标：589， 最右边的x坐标：645     手指坐标在这个范围内代表C区域
    */
   checkFingerOnWhichButton(x, y) {
     console.log("iamhere index.js enter checkIsFingerOnUpButton func")
@@ -155,8 +159,14 @@ export default class Main {
       cur_direction = 1;
     } else if ((x >= 93 && x <= 134) && (y >= 243 && y <= 275)) { //右
       cur_direction = 4;
-    } else if ((x >= 59 && x <= 93) && (y >= 275 && y <= 314)) { //上
+    } else if ((x >= 59 && x <= 93) && (y >= 275 && y <= 314)) { //下
       cur_direction = 2;
+    } else if ((x >= 589 && x <= 645) && (y >= 172 && y <= 227)) { //A
+      cur_direction = 5;
+    } else if ((x >= 531 && x <= 588) && (y >= 228 && y <= 284)) { //B
+      cur_direction = 6;
+    } else if ((x >= 589 && x <= 645) && (y >= 282 && y <= 338)) { //C
+      cur_direction = 7;
     } else {
       cur_direction = 0;
     }
@@ -197,23 +207,21 @@ export default class Main {
           }*/
           this.checkFingerOnWhichButton(x, y);
           console.log("iamhere cur_direction is "+ cur_direction)
-          var n = 0;
-          if (cur_direction == 1) {
-            n = 1;
-          } else if (cur_direction == 2) {
-            n = -1;
+          if (cur_direction == 5) {  //A图片，相当于回车
+            gameState = CONST.GAME_STATE_INIT;
+            //只有一个玩家
+            if(this.menu.playNum == 1){
+              //player2.lives = 0;
+            }
+          } else {
+            var n = 0;
+            if (cur_direction == 1) { //上
+              n = 1;
+            } else if (cur_direction == 2) {//下
+              n = -1;
+            }
+            this.menu.next(n);
           }
-          this.menu.next(n);
-          /*
-          var n = 0;
-          var count=0;
-          if (count % 2 == 0) {
-            n = 1;
-          } else if (count % 2 == 1) {
-            n = -1;
-          }
-          count++;
-          this.menu.next(n);*/
           break;
         case GAME_STATE_START:
           if(!keys.contain(e.keyCode)){
@@ -252,10 +260,11 @@ export default class Main {
       this.menu.draw();
       break;
     case CONST.GAME_STATE_INIT:
-      this.stage.draw();
-      if(stage.isReady == true){
-        gameState = CONST.GAME_STATE_START;
-      }
+      console.log("imahere enter GAME_STATE_INIT branch")
+      //this.stage.draw();
+      //if(stage.isReady == true){
+      //  gameState = CONST.GAME_STATE_START;
+      //}
       break;
     case CONST.GAME_STATE_START:
       drawAll();
