@@ -42,6 +42,9 @@ var emenyStopTime = 0;
 var homeProtectedTime = -1;
 var propTime = 300;
 
+var cur_direction = 0;  //1-->上，2-->下， 3-->左, 4-->右
+//var test_count = 0; 
+
 /**
  * 游戏主函数
  */
@@ -128,6 +131,40 @@ export default class Main {
     homeProtectedTime = -1;
     propTime = 1000;*/
   }
+  /**
+   * 当手指触摸屏幕的时候
+   * 判断手指在方向键还是功能键上，并触发对应的动作
+   * @param {Number} x: 手指的X轴坐标
+   * @param {Number} y: 手指的Y轴坐标
+   * @return {Boolean}: 用于标识手指是否在方向键的上键的布尔值
+   * (16, 243)  (59, 243)  (59, 275)  (16, 275)   左上开始，顺时针，矩形的四个点坐标，手指坐标在这个范围内代表向左
+   * (59, 200)  (93, 200)  (93, 243)  (59, 243)   左上开始，顺时针，矩形的四个点坐标，手指坐标在这个范围内代表向上
+   * (93, 243)  (134,243)  (134,275)  (93, 275)   左上开始，顺时针，矩形的四个点坐标，手指坐标在这个范围内代表向右
+   * (59, 275)  (93, 275)  (93, 314)  (59, 314)   左上开始，顺时针，矩形的四个点坐标，手指坐标在这个范围内代表向下
+   * 1-->上，2-->下， 3-->左, 4-->右
+   */
+  checkFingerOnWhichButton(x, y) {
+    console.log("iamhere index.js enter checkIsFingerOnUpButton func")
+    console.log("x is "+ x +", y is " + y)
+    //const deviation = 30
+    //const deviation = 5 //误差放小一点
+
+    if ((x >= 16 && x <= 59) && (y >= 243 && y <= 275)) { //左
+      cur_direction = 3;
+    } else if ((x >= 59 && x <= 93) && (y >= 200 && y <= 243)) { //上
+      cur_direction = 1;
+    } else if ((x >= 93 && x <= 134) && (y >= 243 && y <= 275)) { //右
+      cur_direction = 4;
+    } else if ((x >= 59 && x <= 93) && (y >= 275 && y <= 314)) { //上
+      cur_direction = 2;
+    } else {
+      cur_direction = 0;
+    }
+    /*return !!(   x >= this.x - deviation
+              && y >= this.y - deviation
+              && x <= this.x + this.width + deviation
+              && y <= this.y + this.height + deviation  )*/
+  }
 
   initEvent() {
     console.log("iamhere main.js enter initEvent func")
@@ -158,6 +195,16 @@ export default class Main {
             }
             menu.next(n);
           }*/
+          this.checkFingerOnWhichButton(x, y);
+          console.log("iamhere cur_direction is "+ cur_direction)
+          var n = 0;
+          if (cur_direction == 1) {
+            n = 1;
+          } else if (cur_direction == 2) {
+            n = -1;
+          }
+          this.menu.next(n);
+          /*
           var n = 0;
           var count=0;
           if (count % 2 == 0) {
@@ -166,7 +213,7 @@ export default class Main {
             n = -1;
           }
           count++;
-          this.menu.next(n);
+          this.menu.next(n);*/
           break;
         case GAME_STATE_START:
           if(!keys.contain(e.keyCode)){
@@ -193,7 +240,12 @@ export default class Main {
     }).bind(this))
 
   }
+
   gameLoop(){
+    /*test_count++;
+    if (test_count > 100) {
+      return
+    }*/
     switch(gameState){
     
     case CONST.GAME_STATE_MENU:
