@@ -3,7 +3,9 @@ var CONST = require("./const.js")
 export default class Num {
 	constructor(context) {
 		this.ctx = context;
-		this.size = 14;
+		//this.size = 14;
+		this.size = 13;//因为stage后面的level值而调整
+
 	}
 
 	draw(num, x, y) {

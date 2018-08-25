@@ -22,18 +22,26 @@ export default class Stage {
 
 	draw() {
 		if(this.dir == 1){
-			
+			console.log("stage position is "+(CONST.SCREEN_WIDTH*25/32 - CONST.SCREEN_WIDTH*7/32) / 2)
 			//temp = 15*15 灰色屏幕已经画完
 			if(this.temp == 225){
 				//78,14为STAGE字样在图片资源中的宽和高，194,208为canvas中的位置
+				//(CONST.SCREEN_WIDTH*7/32 + (CONST.SCREEN_WIDTH*25/32 - CONST.SCREEN_WIDTH*7/32) / 2) - 78/2
+				// (CONST.SCREEN_WIDTH*25/32 - CONST.SCREEN_WIDTH*7/32) / 2)
+				//        含义是找出中间画布（灰色区域的x坐标中间值）的中间值
+				// (CONST.SCREEN_WIDTH*7/32 + (CONST.SCREEN_WIDTH*25/32 - CONST.SCREEN_WIDTH*7/32) / 2)
+				//        含义是方向键的右临界x坐标加上中间画布的宽度的一半，即中间画布的宽度的一半的x坐标
+				// CONST.SCREEN_WIDTH*7/32 + (CONST.SCREEN_WIDTH*25/32 - CONST.SCREEN_WIDTH*7/32) / 2) - 78/2 
+				//        含义是中间画布的宽度的一半的x坐标减去stage字样的一半的宽度，即stage的左临界的x坐标值
 				this.ctx.drawImage(CONST.RESOURCE_IMAGE, 
 					CONST.POS["stageLevel"][0], CONST.POS["stageLevel"][1], 
 					78, 14, 
 					//194, 208, 
-					(CONST.SCREEN_WIDTH*25/32 - CONST.SCREEN_WIDTH*7/32) / 2, 208,
+					(CONST.SCREEN_WIDTH*7/32 + (CONST.SCREEN_WIDTH*25/32 - CONST.SCREEN_WIDTH*7/32) / 2) - 78/2, 208,
 					78, 14);
 				//14为数字的宽和高，308, 208为canvas中的位置
-				this.levelNum.draw(this.level,308, 208);
+				//stage字样的宽度的一半的x坐标加上78/2就跳过了stage字样，然后再加上空间（这里给了10单位长度）
+				this.levelNum.draw(this.level,(CONST.SCREEN_WIDTH*7/32 + (CONST.SCREEN_WIDTH*25/32 - CONST.SCREEN_WIDTH*7/32) / 2) + 78/2 + 10, 208);
 				//this.ctx.drawImage(RESOURCE_IMAGE,POS["num"][0]+this.level*14,POS["num"][1],14, 14,308, 208,14, 14);
 				//绘制地图,调用main里面的方法
 				//initMap();
