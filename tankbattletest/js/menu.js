@@ -27,14 +27,14 @@ export default class Menu {
 			this.y -= 5;
 		}
 		console.log("SCREEN_WIDTH is "+CONST.SCREEN_WIDTH + ",SCREEN_HEIGHT is "+CONST.SCREEN_HEIGHT)
-		this.ctx.clearRect(0, 0, CONST.SCREEN_WIDTH+300, CONST.SCREEN_HEIGHT+300);   
+		this.ctx.clearRect(0, 0, CONST.SCREEN_WIDTH, CONST.SCREEN_HEIGHT);   
 		this.ctx.save(); //保存当前的绘图上下文
 		//画背景
 		this.ctx.drawImage(CONST.MENU_IMAGE, 
 						0, 0,
-						450, 500,
-						this.x+140, this.y, 
-						350, 450);
+						CONST.SCREEN_WIDTH, CONST.SCREEN_HEIGHT,
+						CONST.SCREEN_WIDTH*3/16, this.y, 
+						CONST.SCREEN_WIDTH*7/8, CONST.SCREEN_HEIGHT);
 		//画选择坦克
 		console.log(CONST.POS["selectTank"][0]+","+CONST.POS["selectTank"][1])
 		this.ctx.drawImage(CONST.RESOURCE_IMAGE,  //要渲染的image对象
@@ -53,9 +53,9 @@ export default class Menu {
 							220,  //被剪裁的图片的宽度，x轴
 							220,  //被剪裁的图片的高度，y轴
 							0,//放置在画布中的位置，x轴
-							this.y+170,  //放置在画布中的位置，y轴
-							160,   //使用的图片的大小，宽度
-							160);  //使用的图片的大小，高度
+							this.y+180,  //放置在画布中的位置，y轴
+							140,   //使用的图片的大小，宽度
+							140);  //使用的图片的大小，高度
 
 		//画手柄右边的按键A
 		this.ctx.drawImage(CONST.RESOURCE_IMAGE_DIRECTION,  //要渲染的image对象
@@ -63,7 +63,7 @@ export default class Menu {
 							250,  //图片剪裁起始位置y轴
 							120,  //被剪裁的图片的宽度，x轴
 							120,  //被剪裁的图片的高度，y轴
-							560,//放置在画布中的位置，x轴
+							CONST.SCREEN_WIDTH*7/8,//放置在画布中的位置，x轴
 							this.y+160,  //放置在画布中的位置，y轴
 							70,   //使用的图片的大小，宽度
 							70);  //使用的图片的大小，高度
@@ -73,7 +73,7 @@ export default class Menu {
 							10,  //图片剪裁起始位置y轴
 							120,  //被剪裁的图片的宽度，x轴
 							120,  //被剪裁的图片的高度，y轴
-							500,//放置在画布中的位置，x轴
+							CONST.SCREEN_WIDTH*25/32,//放置在画布中的位置，x轴
 							this.y+215,  //放置在画布中的位置，y轴
 							70,   //使用的图片的大小，宽度
 							70);  //使用的图片的大小，高度
@@ -83,10 +83,11 @@ export default class Menu {
 							320,  //图片剪裁起始位置y轴
 							120,  //被剪裁的图片的宽度，x轴
 							120,  //被剪裁的图片的高度，y轴
-							560,//放置在画布中的位置，x轴
+							CONST.SCREEN_WIDTH*7/8,//放置在画布中的位置，x轴
 							this.y+270,  //放置在画布中的位置，y轴
 							70,   //使用的图片的大小，宽度
 							70);  //使用的图片的大小，高度
+		
 		this.ctx.restore();  // 恢复之前保存的绘图上下文
 	}
 
