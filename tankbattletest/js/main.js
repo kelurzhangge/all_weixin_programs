@@ -109,7 +109,7 @@ export default class Main {
 
   initObject(){
     this.menu = new Menu(ctx);
-    //this.stage = new Stage(ctx,level);
+    this.stage = new Stage(ctx,level);
     //this.map = new Map(wallCtx,grassCtx);
     //this.player1 = new PlayTank(tankCtx);
     /*player1.x = 129 + map.offsetX;
@@ -150,8 +150,6 @@ export default class Main {
   checkFingerOnWhichButton(x, y) {
     console.log("iamhere index.js enter checkIsFingerOnUpButton func")
     console.log("x is "+ x +", y is " + y)
-    //const deviation = 30
-    //const deviation = 5 //误差放小一点
 
     if ((x >= 16 && x <= 59) && (y >= 243 && y <= 275)) { //左
       cur_direction = 3;
@@ -170,10 +168,6 @@ export default class Main {
     } else {
       cur_direction = 0;
     }
-    /*return !!(   x >= this.x - deviation
-              && y >= this.y - deviation
-              && x <= this.x + this.width + deviation
-              && y <= this.y + this.height + deviation  )*/
   }
 
   initEvent() {
@@ -190,21 +184,6 @@ export default class Main {
 
       switch(gameState){
         case CONST.GAME_STATE_MENU:
-          /*if(e.keyCode == keyboard.ENTER){
-            gameState = GAME_STATE_INIT;
-            //只有一个玩家
-            if(menu.playNum == 1){
-              player2.lives = 0;
-            }
-          }else{
-            var n = 0;
-            if(e.keyCode == keyboard.DOWN){
-              n = 1;
-            }else if(e.keyCode == keyboard.UP){
-              n = -1;
-            }
-            menu.next(n);
-          }*/
           this.checkFingerOnWhichButton(x, y);
           console.log("iamhere cur_direction is "+ cur_direction)
           if (cur_direction == 5) {  //A图片，相当于回车
@@ -261,7 +240,7 @@ export default class Main {
       break;
     case CONST.GAME_STATE_INIT:
       console.log("imahere enter GAME_STATE_INIT branch")
-      //this.stage.draw();
+      this.stage.draw();
       //if(stage.isReady == true){
       //  gameState = CONST.GAME_STATE_START;
       //}
