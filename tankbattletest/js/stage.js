@@ -1,7 +1,7 @@
 var CONST = require("./const.js")
 import Num from './num.js'
 
-export default class Menu {
+export default class Stage {
 	constructor (context, l) {
 		this.ctx = context;
 		this.ctx.fillStyle = "#7f7f7f";
