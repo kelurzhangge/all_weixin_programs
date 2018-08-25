@@ -6,14 +6,16 @@
 //var SCREEN_HEIGHT = 448;//屏幕高
 //var SCREEN_WIDTH = window.innerHeight-10;
 //var SCREEN_HEIGHT = window.innerWidth-60;
-var SCREEN_WIDTH = 320;
-var SCREEN_HEIGHT = 350;
+var SCREEN_WIDTH = window.innerWidth;
+var SCREEN_HEIGHT = window.innerHeight;
 
 /**************图片资源*****************/
 var MENU_IMAGE = new Image();
 MENU_IMAGE.src = "images/menu.gif";
 var RESOURCE_IMAGE = new Image();
 RESOURCE_IMAGE.src = "images/tankAll.gif";
+var RESOURCE_IMAGE_DIRECTION = new Image();
+RESOURCE_IMAGE_DIRECTION.src = "images/dpad.png"
 
 
 /**************各个图块在图片中的位置*****************/
@@ -84,6 +86,7 @@ module.exports = {
 	SCREEN_HEIGHT: SCREEN_HEIGHT,
 	MENU_IMAGE: MENU_IMAGE,
 	RESOURCE_IMAGE: RESOURCE_IMAGE,
+	RESOURCE_IMAGE_DIRECTION: RESOURCE_IMAGE_DIRECTION,
 	POS: POS,
 	START_AUDIO: START_AUDIO,
 	BULLET_DESTROY_AUDIO: BULLET_DESTROY_AUDIO,

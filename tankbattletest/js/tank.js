@@ -165,8 +165,8 @@ export default class SelectTank extends Tank {
 	constructor() {
 		super()
 		//this.ys = [210, 281];//两个Y坐标，分别对应1p和2p
-		this.ys = [193, 217];
-		this.x = 85;
+		this.ys = [225, 254];
+		this.x = 82;
 		this.size = 27;
 	}
 	//SelectTank.prototype = new Tank();

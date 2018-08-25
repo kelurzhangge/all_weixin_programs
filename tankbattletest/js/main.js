@@ -60,10 +60,10 @@ export default class Main {
   }
 
   initScreen(){
-    ctx = canvas.getContext('2d')
-    canvas.width = 300
-    canvas.height = 300
-    ctx.fillStyle = 'red'
+    //ctx = canvas.getContext('2d')
+    //canvas.width = 300
+    //canvas.height = 300
+    //ctx.fillStyle = 'red'
     var wallCanvas = wx.createCanvas();
     wallCtx = wallCanvas.getContext("2d")
     var grassCanvas = wx.createCanvas();

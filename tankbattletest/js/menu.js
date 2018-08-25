@@ -26,10 +26,15 @@ export default class Menu {
 		}else{
 			this.y -= 5;
 		}
-		this.ctx.clearRect(0, 0, CONST.SCREEN_WIDTH, CONST.SCREEN_HEIGHT);   
+		console.log("SCREEN_WIDTH is "+CONST.SCREEN_WIDTH + ",SCREEN_HEIGHT is "+CONST.SCREEN_HEIGHT)
+		this.ctx.clearRect(0, 0, CONST.SCREEN_WIDTH+300, CONST.SCREEN_HEIGHT+300);   
 		this.ctx.save(); //保存当前的绘图上下文
 		//画背景
-		this.ctx.drawImage(CONST.MENU_IMAGE, this.x, this.y, CONST.SCREEN_WIDTH, CONST.SCREEN_HEIGHT);
+		this.ctx.drawImage(CONST.MENU_IMAGE, 
+						0, 0,
+						450, 500,
+						this.x+140, this.y, 
+						350, 450);
 		//画选择坦克
 		console.log(CONST.POS["selectTank"][0]+","+CONST.POS["selectTank"][1])
 		this.ctx.drawImage(CONST.RESOURCE_IMAGE,  //要渲染的image对象
@@ -37,10 +42,51 @@ export default class Menu {
 							CONST.POS["selectTank"][1] + temp,  //图片剪裁起始位置y轴
 							this.selectTank.size,  //被剪裁的图片的宽度，x轴
 							this.selectTank.size,  //被剪裁的图片的高度，y轴
-							this.selectTank.x,//放置在画布中的位置，x轴
+							this.selectTank.x+170,//放置在画布中的位置，x轴
 							this.y + this.selectTank.ys[this.playNum-1],  //放置在画布中的位置，y轴
 							this.selectTank.size-2,   //使用的图片的大小，宽度
 							this.selectTank.size-2);  //使用的图片的大小，高度
+		//画方向盘
+		this.ctx.drawImage(CONST.RESOURCE_IMAGE_DIRECTION,  //要渲染的image对象
+							0,  //图片剪裁起始位置x轴
+							0,  //图片剪裁起始位置y轴
+							220,  //被剪裁的图片的宽度，x轴
+							220,  //被剪裁的图片的高度，y轴
+							0,//放置在画布中的位置，x轴
+							this.y+170,  //放置在画布中的位置，y轴
+							160,   //使用的图片的大小，宽度
+							160);  //使用的图片的大小，高度
+
+		//画手柄右边的按键A
+		this.ctx.drawImage(CONST.RESOURCE_IMAGE_DIRECTION,  //要渲染的image对象
+							650,  //图片剪裁起始位置x轴
+							250,  //图片剪裁起始位置y轴
+							120,  //被剪裁的图片的宽度，x轴
+							120,  //被剪裁的图片的高度，y轴
+							560,//放置在画布中的位置，x轴
+							this.y+160,  //放置在画布中的位置，y轴
+							70,   //使用的图片的大小，宽度
+							70);  //使用的图片的大小，高度
+		//画手柄右边的按键B
+		this.ctx.drawImage(CONST.RESOURCE_IMAGE_DIRECTION,  //要渲染的image对象
+							880,  //图片剪裁起始位置x轴
+							10,  //图片剪裁起始位置y轴
+							120,  //被剪裁的图片的宽度，x轴
+							120,  //被剪裁的图片的高度，y轴
+							500,//放置在画布中的位置，x轴
+							this.y+215,  //放置在画布中的位置，y轴
+							70,   //使用的图片的大小，宽度
+							70);  //使用的图片的大小，高度
+		//画手柄右边的按键C
+		this.ctx.drawImage(CONST.RESOURCE_IMAGE_DIRECTION,  //要渲染的image对象
+							805,  //图片剪裁起始位置x轴
+							320,  //图片剪裁起始位置y轴
+							120,  //被剪裁的图片的宽度，x轴
+							120,  //被剪裁的图片的高度，y轴
+							560,//放置在画布中的位置，x轴
+							this.y+270,  //放置在画布中的位置，y轴
+							70,   //使用的图片的大小，宽度
+							70);  //使用的图片的大小，高度
 		this.ctx.restore();  // 恢复之前保存的绘图上下文
 	}
 
