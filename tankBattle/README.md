@@ -14,3 +14,8 @@
    2.3 游戏手柄的代码实例地址：
    
       https://github.com/caibou/RockerView
+      
+   2.4 phaser与微信小程序的适配及demo地址：
+   
+      https://github.com/channingbreeze/phaser-wxdemo
+      
