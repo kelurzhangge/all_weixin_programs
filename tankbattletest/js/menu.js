@@ -26,17 +26,31 @@ export default class Menu {
 		}else{
 			this.y -= 5;
 		}
-		console.log("SCREEN_WIDTH is "+CONST.SCREEN_WIDTH + ",SCREEN_HEIGHT is "+CONST.SCREEN_HEIGHT)
+		// console.log("SCREEN_WIDTH is "+CONST.SCREEN_WIDTH + ",SCREEN_HEIGHT is "+CONST.SCREEN_HEIGHT)
 		this.ctx.clearRect(0, 0, CONST.SCREEN_WIDTH, CONST.SCREEN_HEIGHT);   
 		this.ctx.save(); //保存当前的绘图上下文
 		//画背景
+		/*
+			context.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
+			img	规定要使用的图像、画布或视频。
+			sx	可选。开始剪切的 x 坐标位置。
+			sy	可选。开始剪切的 y 坐标位置。
+			swidth	可选。被剪切图像的宽度。
+			sheight	可选。被剪切图像的高度。
+			x	在画布上放置图像的 x 坐标位置。
+			y	在画布上放置图像的 y 坐标位置。
+			width	可选。要使用的图像的宽度。（伸展或缩小图像）
+			height	可选。要使用的图像的高度。（伸展或缩小图像）
+		*/
+
 		this.ctx.drawImage(CONST.MENU_IMAGE, 
 						0, 0,
 						CONST.SCREEN_WIDTH, CONST.SCREEN_HEIGHT,
 						CONST.SCREEN_WIDTH*3/16, this.y, 
 						CONST.SCREEN_WIDTH*7/8, CONST.SCREEN_HEIGHT);
 		//画选择坦克
-		console.log(CONST.POS["selectTank"][0]+","+CONST.POS["selectTank"][1])
+		// console.log(CONST.POS["selectTank"][0]+","+CONST.POS["selectTank"][1])
+		
 		this.ctx.drawImage(CONST.RESOURCE_IMAGE,  //要渲染的image对象
 							CONST.POS["selectTank"][0],  //图片剪裁起始位置x轴
 							CONST.POS["selectTank"][1] + temp,  //图片剪裁起始位置y轴
