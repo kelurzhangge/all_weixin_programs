@@ -8,8 +8,9 @@ import DataBus from './databus'*/
 import Menu from './menu.js'
 import Map from './map.js'
 import Stage from './stage.js'
+import { PlayTank, EnemyOne, EnemyTwo, EnemyThree } from './tank.js'
+
 var CONST = require("./const.js")
-//import './jquery.min.js'
 
 let ctx = canvas.getContext('2d')
 //let databus = new DataBus()
@@ -20,25 +21,25 @@ var tankCtx;//坦克画布
 var overCtx;//结束画布
 var menu = null;//菜单
 var stage = null;//舞台
-var map = null;//地图
+export var map = null;//地图
 var player1 = null;//玩家1
 var player2 = null;//玩家2
 var prop = null;
 var enemyArray = [];//敌方坦克
-var bulletArray = [];//子弹数组
+export var bulletArray = [];//子弹数组
 var keys = [];//记录按下的按键
-var crackArray = [];//爆炸数组
+export var crackArray = [];//爆炸数组
 
 var gameState = CONST.GAME_STATE_MENU;//默认菜单状态
 var level = 1;
-var maxEnemy = 20;//敌方坦克总数
+export var maxEnemy = 20;//敌方坦克总数
 var maxAppearEnemy = 5;//屏幕上一起出现的最大数
 var appearEnemy = 0; //已出现的敌方坦克
 var mainframe = 0;
 var isGameOver = false;
 var overX = 176;
 var overY = 384;
-var emenyStopTime = 0;
+export var enemyStopTime = 0;
 var homeProtectedTime = -1;
 var propTime = 300;
 
@@ -67,22 +68,24 @@ export default class Main {
     //canvas.width = 300
     //canvas.height = 300
     //ctx.fillStyle = 'red'
-    var wallCanvas = wx.createCanvas();
-    wallCtx = wallCanvas.getContext("2d")
+    //var wallCanvas = wx.createCanvas();
+    //wallCtx = wallCanvas.getContext("2d")
+    wallCtx = ctx;
     var grassCanvas = wx.createCanvas();
     grassCtx = grassCanvas.getContext("2d")
-    wallCanvas.width = 300
-    wallCanvas.height = 300
-    grassCanvas.width = 300
-    grassCanvas.height = 300
-    var tankCanvas = wx.createCanvas();
-    tankCtx = tankCanvas.getContext("2d")
-    tankCanvas.width = 300
-    tankCanvas.height = 300
+    //wallCanvas.width = CONST.SCREEN_WIDTH
+    //wallCanvas.height = CONST.SCREEN_HEIGHT
+    grassCanvas.width = CONST.SCREEN_WIDTH
+    grassCanvas.height = CONST.SCREEN_HEIGHT
+    //var tankCanvas = wx.createCanvas();
+    tankCtx = ctx;
+    //tankCtx = tankCanvas.getContext("2d")
+    //tankCanvas.width = CONST.SCREEN_WIDTH
+    //tankCanvas.height = CONST.SCREEN_HEIGHT
     var overCanvas = wx.createCanvas();
     overCtx = overCanvas.getContext("2d")
-    overCanvas.width = 300
-    overCanvas.height = 300
+    overCanvas.width = CONST.SCREEN_WIDTH
+    overCanvas.height = CONST.SCREEN_HEIGHT
     //var canvas = wx.createCanvas();
 
     //var canvas = $("#stageCanvas");
@@ -111,26 +114,31 @@ export default class Main {
     this.menu = new Menu(ctx);
     this.stage = new Stage(ctx,level);
     //this.map = new Map(wallCtx,grassCtx);
+    map = new Map(wallCtx,grassCtx);
     //this.player1 = new PlayTank(tankCtx);
-    /*player1.x = 129 + map.offsetX;
-    player1.y = 385 + map.offsetY;
+    player1 = new PlayTank(tankCtx);
+    //player1.x = 129 + map.offsetX;
+    player1.x = 94 + map.offsetX;
+    //player1.y = 385 + map.offsetY;
+    player1.y = 285 + map.offsetY;;
     player2 = new PlayTank(tankCtx);
     player2.offsetX = 128; //player2的图片x与图片1相距128
-    player2.x = 256 + map.offsetX;
-    player2.y = 385 + map.offsetY;
+    player2.x = 189 + map.offsetX;
+    player2.y = 285 + map.offsetY;
     appearEnemy = 0; //已出现的敌方坦克
     enemyArray = [];//敌方坦克
     bulletArray = [];//子弹数组
     keys = [];//记录按下的按键
     crackArray = [];//爆炸数组
-    isGameOver = false;
+    /*isGameOver = false;
     overX = 176;
     overY = 384;
-    overCtx.clearRect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
-    emenyStopTime = 0;
+    overCtx.clearRect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT);*/
+    enemyStopTime = 0;
     homeProtectedTime = -1;
-    propTime = 1000;*/
+    propTime = 1000;
   }
+
   /**
    * 当手指触摸屏幕的时候
    * 判断手指在方向键还是功能键上，并触发对应的动作
@@ -190,7 +198,7 @@ export default class Main {
             gameState = CONST.GAME_STATE_INIT;
             //只有一个玩家
             if(this.menu.playNum == 1){
-              //player2.lives = 0;
+              player2.lives = 0;
             }
           } else {
             var n = 0;
@@ -202,7 +210,7 @@ export default class Main {
             this.menu.next(n);
           }
           break;
-        case GAME_STATE_START:
+        case CONST.GAME_STATE_START:
           if(!keys.contain(e.keyCode)){
             keys.push(e.keyCode);
           }
@@ -218,15 +226,126 @@ export default class Main {
           }
           break;
       }
-      /*if ( this.checkIsFingerOnAir(x, y) ) {
-        this.touched = true
-
-        this.setAirPosAcrossFingerPosZ(x, y)
-      }*/
 
     }).bind(this))
 
   }
+
+  addEnemyTank(){
+    console.log("iamhre enter addEnemyTank")
+    if(enemyArray == null || enemyArray.length >= maxAppearEnemy || maxEnemy == 0){
+      return ;
+    }
+    appearEnemy++;
+    var rand = parseInt(Math.random()*3);
+    var obj = null;
+    if(rand == 0){
+      obj = new EnemyOne(tankCtx);
+    }else if(rand == 1){
+      obj = new EnemyTwo(tankCtx);
+    }else if(rand == 2){
+      obj = new EnemyThree(tankCtx);
+    }
+    //obj.x = CONST.ENEMY_LOCATION[parseInt(Math.random()*3)] + map.offsetX;
+    obj.x = CONST.ENEMY_LOCATION[parseInt(Math.random()*3)] -2 + map.offsetX+CONST.SCREEN_WIDTH*7/32;
+    obj.y = map.offsetY;  
+    console.log("iamhere obj.x is "+obj.x+", obj.y is "+obj.y+", enemyArray lenght is "+enemyArray.length);
+    obj.dir = CONST.DOWN;
+    enemyArray[enemyArray.length] = obj;
+    //更新地图右侧坦克数
+    map.clearEnemyNum(maxEnemy,appearEnemy);
+  }
+
+  drawEnemyTanks(){
+    console.log("imahere enter drawEnemyTanks func"+enemyArray.length)
+    if(enemyArray != null || enemyArray.length > 0){
+      for(var i=0;i<enemyArray.length;i++){
+        var enemyObj = enemyArray[i];
+        if(enemyObj.isDestroyed){
+          enemyArray.removeByIndex(i);
+          i--;
+        }else{
+          enemyObj.draw();
+        }
+      }
+    }
+    if(enemyStopTime > 0){
+      enemyStopTime --;
+    }
+  }
+
+  drawCrack(){
+    if(crackArray != null && crackArray.length > 0){
+      for(var i=0;i<crackArray.length;i++){
+        var crackObj = crackArray[i];
+        if(crackObj.isOver){
+          crackArray.removeByIndex(i);
+          i--;
+          if(crackObj.owner == player1){
+            player1.renascenc(1);
+          }else if(crackObj.owner == player2){
+            player2.renascenc(2);
+          }
+        }else{
+          crackObj.draw();
+        }
+      }
+    }
+  }
+  drawBullet(){
+    if(bulletArray != null && bulletArray.length > 0){
+      for(var i=0;i<bulletArray.length;i++){
+        var bulletObj = bulletArray[i];
+        if(bulletObj.isDestroyed){
+          bulletObj.owner.isShooting = false;
+          bulletArray.removeByIndex(i);
+          i--;
+        }else{
+          bulletObj.draw();
+        }
+      }
+    }
+  }
+  drawAll(){
+    console.log("iamhere enter drawAll func")
+
+    //tankCtx.clearRect(0,0,CONST.SCREEN_WIDTH*7/32,CONST.SCREEN_HEIGHT);
+    tankCtx.clearRect(CONST.SCREEN_WIDTH*7/32, 0, CONST.SCREEN_WIDTH*25/32 - CONST.SCREEN_WIDTH*7/32, CONST.SCREEN_HEIGHT);
+    map.draw();//这是我自己加的,基本上初始化绘制一遍即可，现在先每帧都绘制。
+    if(player1.lives > 0){
+      console.log("iamhere player1.lives > 0")
+      player1.draw();
+    }
+    if(player2.lives > 0){
+      player2.draw();
+    }
+    drawLives();
+    console.log("drawAll, appearEnemy is "+appearEnemy + ", maxEnemy is "+maxEnemy);
+    if(appearEnemy<maxEnemy){
+      if(mainframe % 100 == 0){
+        this.addEnemyTank();
+        mainframe = 0;
+      }
+      mainframe++;
+    }
+    
+    this.drawEnemyTanks();
+    this.drawBullet();
+    this.drawCrack();
+    //keyEvent();
+    /*if(propTime<=0){
+      drawProp();
+    }else{
+      propTime --;
+    }*//*
+    if(homeProtectedTime > 0){
+      homeProtectedTime --;
+    }else if(homeProtectedTime == 0){
+      homeProtectedTime = -1;
+      homeNoProtected();
+    }*/
+  }
+
 
   gameLoop(){
     /*test_count++;
@@ -241,20 +360,21 @@ export default class Main {
     case CONST.GAME_STATE_INIT:
       console.log("imahere enter GAME_STATE_INIT branch")
       this.stage.draw();
-      //if(stage.isReady == true){
-      //  gameState = CONST.GAME_STATE_START;
-      //}
+      if(this.stage.isReady == true){
+        gameState = CONST.GAME_STATE_START;
+      }
       break;
     case CONST.GAME_STATE_START:
-      drawAll();
-      if(isGameOver ||(player1.lives <=0 && player2.lives <= 0)){
+      console.log("iamhere enter GAME_STATE_START")
+      this.drawAll();
+      /*if(isGameOver ||(player1.lives <=0 && player2.lives <= 0)){
         gameState = CONST.GAME_STATE_OVER;
         this.map.homeHit();
         CONST.PLAYER_DESTROY_AUDIO.play();
       }
       if(appearEnemy == maxEnemy && enemyArray.length == 0){
         gameState  = CONST.GAME_STATE_WIN;
-      }
+      }*/
       break;
     case CONST.GAME_STATE_WIN:
       nextLevel();
@@ -264,6 +384,18 @@ export default class Main {
       break;
     }
   }
+}
+
+function drawLives(){
+  map.drawLives(player1.lives,1);
+  map.drawLives(player2.lives,2);
+}
+
+export function initMap(){
+    map.setMapLevel(level);
+    map.draw();
+    drawLives();
+}
 /*
 $(document).keydown(function(e){
   switch(gameState){
@@ -305,32 +437,12 @@ $(document).keydown(function(e){
 $(document).keyup(function(e){
   keys.remove(e.keyCode);
 });
+*/
+
 /*
-function initMap(){
-  map.setMapLevel(level);;
-  map.draw();
-  drawLives();
-}
 
-function drawLives(){
-  map.drawLives(player1.lives,1);
-  map.drawLives(player2.lives,2);
-}
 
-function drawBullet(){
-  if(bulletArray != null && bulletArray.length > 0){
-    for(var i=0;i<bulletArray.length;i++){
-      var bulletObj = bulletArray[i];
-      if(bulletObj.isDestroyed){
-        bulletObj.owner.isShooting = false;
-        bulletArray.removeByIndex(i);
-        i--;
-      }else{
-        bulletObj.draw();
-      }
-    }
-  }
-}
+
 
 function keyEvent(){
   if(keys.contain(keyboard.W)){
@@ -443,24 +555,7 @@ function drawAll(){
   }
 }
 
-function drawCrack(){
-  if(crackArray != null && crackArray.length > 0){
-    for(var i=0;i<crackArray.length;i++){
-      var crackObj = crackArray[i];
-      if(crackObj.isOver){
-        crackArray.removeByIndex(i);
-        i--;
-        if(crackObj.owner == player1){
-          player1.renascenc(1);
-        }else if(crackObj.owner == player2){
-          player2.renascenc(2);
-        }
-      }else{
-        crackObj.draw();
-      }
-    }
-  }
-}
+
 
 
 function gameOver(){
@@ -526,161 +621,4 @@ function homeNoProtected(){
 };
 */
 
-  /*
-  restart() {
-    databus.reset()
 
-    canvas.removeEventListener(
-      'touchstart',
-      this.touchHandler
-    )
-
-    this.bg = new BackGround(ctx)
-    this.player = new Player(ctx)
-    this.gameinfo = new GameInfo()
-    this.music = new Music()
-
-    this.bindLoop = this.loop.bind(this)
-    this.hasEventBind = false
-
-    // 清除上一局的动画
-    window.cancelAnimationFrame(this.aniId);
-
-    this.aniId = window.requestAnimationFrame(
-      this.bindLoop,
-      canvas
-    )
-  }
-  */
-  /**
-   * 随着帧数变化的敌机生成逻辑
-   * 帧数取模定义成生成的频率
-   *//*
-  enemyGenerate() {
-    if (databus.frame % 30 === 0) {
-      let enemy = databus.pool.getItemByClass('enemy', Enemy)
-      enemy.init(6)
-      databus.enemys.push(enemy)
-    }
-  }
-
-  // 全局碰撞检测
-  collisionDetection() {
-    let that = this
-
-    databus.bullets.forEach((bullet) => {
-      for (let i = 0, il = databus.enemys.length; i < il; i++) {
-        let enemy = databus.enemys[i]
-
-        if (!enemy.isPlaying && enemy.isCollideWith(bullet)) {
-          enemy.playAnimation()
-          that.music.playExplosion()
-
-          bullet.visible = false
-          databus.score += 1
-
-          break
-        }
-      }
-    })
-
-    for (let i = 0, il = databus.enemys.length; i < il; i++) {
-      let enemy = databus.enemys[i]
-
-      if (this.player.isCollideWith(enemy)) {
-        databus.gameOver = true
-
-        break
-      }
-    }
-  }
-
-  // 游戏结束后的触摸事件处理逻辑
-  touchEventHandler(e) {
-    e.preventDefault()
-
-    let x = e.touches[0].clientX
-    let y = e.touches[0].clientY
-
-    let area = this.gameinfo.btnArea
-
-    if (x >= area.startX
-      && x <= area.endX
-      && y >= area.startY
-      && y <= area.endY)
-      this.restart()
-  }
-  */
-  /**
-   * canvas重绘函数
-   * 每一帧重新绘制所有的需要展示的元素
-   *//*
-  render() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-    this.bg.render(ctx)
-
-    databus.bullets
-      .concat(databus.enemys)
-      .forEach((item) => {
-        item.drawToCanvas(ctx)
-      })
-
-    this.player.drawToCanvas(ctx)
-
-    databus.animations.forEach((ani) => {
-      if (ani.isPlaying) {
-        ani.aniRender(ctx)
-      }
-    })
-
-    this.gameinfo.renderGameScore(ctx, databus.score)
-
-    // 游戏结束停止帧循环
-    if (databus.gameOver) {
-      this.gameinfo.renderGameOver(ctx, databus.score)
-
-      if (!this.hasEventBind) {
-        this.hasEventBind = true
-        this.touchHandler = this.touchEventHandler.bind(this)
-        canvas.addEventListener('touchstart', this.touchHandler)
-      }
-    }
-  }
-
-  // 游戏逻辑更新主函数
-  update() {
-    if (databus.gameOver)
-      return;
-
-    this.bg.update()
-
-    databus.bullets
-      .concat(databus.enemys)
-      .forEach((item) => {
-        item.update()
-      })
-
-    this.enemyGenerate()
-
-    this.collisionDetection()
-
-    if (databus.frame % 20 === 0) {
-      this.player.shoot()
-      this.music.playShoot()
-    }
-  }
-
-  // 实现游戏帧循环
-  loop() {
-    databus.frame++
-
-    this.update()
-    this.render()
-
-    this.aniId = window.requestAnimationFrame(
-      this.bindLoop,
-      canvas
-    )
-  }*/
-}

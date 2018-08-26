@@ -1,5 +1,5 @@
 var CONST = require("./const.js")
-import SelectTank from './tank.js'
+import { SelectTank } from './tank.js'
 /**
  * 游戏开始菜单
  **/ 

@@ -1,4 +1,6 @@
 var CONST = require('./const.js')
+import {enemyStopTime,map,bulletArray} from './main.js'
+import Bullet from './bullet.js'
 /**
  * 坦克基类
  * @returns
@@ -25,7 +27,7 @@ class Tank {
 	move(){
 		//如果是AI坦克，在一定时间或者碰撞之后切换方法
 		
-		if(this.isAI && emenyStopTime > 0 ){
+		if(this.isAI && enemyStopTime > 0 ){
 			return;
 		}
 
@@ -54,7 +56,7 @@ class Tank {
 			this.x = this.tempX;
 			this.y = this.tempY;
 		}
-	};
+	}
 	
 	/**
 	 * 碰撞检测
@@ -82,12 +84,13 @@ class Tank {
 				this.hit = true;
 			}
 		}
+		/*
 		if(!this.hit){
 			//地图检测
 			if(tankMapCollision(this,map)){
 				this.hit = true;
 			}
-		}
+		}*/
 		//坦克检测
 		/*if(enemyArray != null && enemyArray.length >0){
 			var enemySize = enemyArray.length;
@@ -98,19 +101,19 @@ class Tank {
 				}
 			}
 		}*/
-	};
+	}
 	
 	/**
 	 * 是否被击中
 	 */
 	isShot(){
 		
-	};
+	}
 	/**
 	 * 射击
 	 */ 
 	shoot(type){
-		if(this.isAI && emenyStopTime > 0 ){
+		if(this.isAI && enemyStopTime > 0 ){
 			return;
 		}
 		if(this.isShooting){
@@ -142,7 +145,7 @@ class Tank {
 			bulletArray.push(this.bullet);
 			this.isShooting = true;
 		}
-	};
+	}
 	
 	/**
 	 * 坦克被击毁
@@ -151,28 +154,245 @@ class Tank {
 		this.isDestroyed = true;
 		crackArray.push(new CrackAnimation(CONST.CRACK_TYPE_TANK,this.ctx,this));
 		CONST.TANK_DESTROY_AUDIO.play();
-	};
-	
-	
-	
+	}
 };
 
 /**
  * 菜单选择坦克
  * @returns
  */
-export default class SelectTank extends Tank {
+export class SelectTank {
 	constructor() {
-		super()
 		//this.ys = [210, 281];//两个Y坐标，分别对应1p和2p
 		this.ys = [251, 284];
 		this.x = 82;
 		this.size = 27;
 	}
-	//SelectTank.prototype = new Tank();
 }
+SelectTank.prototype = new Tank();
 
+/*
+* 玩家坦克
+* @param context 画坦克的画布
+* @returns
+*/
+export class PlayTank {
+	constructor(context) {
+		this.ctx = context;
+		this.lives = 3;//生命值
+		this.isProtected = true;//是否受保护
+		this.protectedTime = 500;//保护时间
+		this.offsetX = 0;//坦克2与坦克1的距离
+		this.speed = 2;//坦克的速度
 
+		this.draw = function() {
+			console.log("imahere this.draw enter")
+			this.hit = false;
+			console.log("iamhere this.x is "+this.x+", this.y is "+this.y);
+			this.ctx.drawImage(CONST.RESOURCE_IMAGE, 
+				CONST.POS["player"][0]+this.offsetX+this.dir*this.size,
+				CONST.POS["player"][1],
+				this.size, this.size,
+				//this.x, this.y,
+				CONST.SCREEN_WIDTH*7/32+this.x, this.y,
+				//this.size, this.size);
+				27, 27);
+			if (this.isProtected) {
+				var temp = parseInt((500-this.protectedTime)/5)%2;
+				this.ctx.drawImage(CONST.RESOURCE_IMAGE, 
+									CONST.POS["protected"][0],
+									CONST.POS["protected"][1]+32*temp,
+									32, 32,
+									//this.x, this.y, 
+									CONST.SCREEN_WIDTH*7/32+this.x, this.y,
+									27, 27);
+				this.protectedTime--;
+				if (this.protectedTime == 0) {
+					this.isProtected = false;
+				}
+			}
+		};
+
+		this.distroy= function () {
+			this.isDestroyed = true;
+			crackArray.push(new CrackAnimation(CONST.CRACK_TYPE_TANK, this.ctx, this));
+			CONST.PLAYER_DESTROY_AUDIO.play();
+		};
+
+		this.renascenc = function () {
+			this.lives--;
+			this.dir = CONST.UP;
+			this.isProtected = true;
+			this.protectedTime = 500;
+			this.isDestroyed = false;
+			var temp = 0;
+			if (player == 1) {
+				temp = 129;
+			} else {
+				temp = 256;
+			}
+			this.x = temp + map.offsetX;
+			this.y = 385 + map.offsetY;
+		};
+	}
+}
+PlayTank.prototype = new Tank();
+
+/*
+* 敌方坦克1
+* @param context 画坦克的画布
+* @returns
+*/
+export class EnemyOne {
+	constructor(context) {
+		this.ctx =context;
+		this.isAppear = false;
+		this.times = 0;
+		this.lives = 1;
+		this.isAI = true;
+		this.speed = 1.5;
+
+		this.draw = function () {
+			console.log("iamhere EnemyOne draw func")
+			this.times++;
+			if (!this.isAppear) {
+				var temp = parseInt(this.times/5)%7;
+				this.ctx.drawImage(CONST.RESOURCE_IMAGE, 
+									CONST.POS["enemyBefore"][0]+temp*32,
+									CONST.POS["enemyBefore"][1],
+									32,32,
+									this.x, this.y,
+									27,27);
+				if(this.times == 34) {
+					this.isAppear = true;
+					this.times = 0;
+					this.shoot(2);
+				}
+			} else {
+				this.ctx.drawImage(CONST.RESOURCE_IMAGE, 
+					CONST.POS["enemy1"][0]+this.dir*this.size,
+					CONST.POS["enemy1"][1],
+					32, 32,
+					this.x, this.y,
+					27, 27);
+
+				//以一定的概率射击
+				if (this.times % 50 == 0) {
+					var ra = Math.random();
+					if (ra < this.shootRate) {
+						this.shoot(2);
+					}
+					this.times = 0;
+				}
+				this.move();
+			}
+		}
+	}
+}
+EnemyOne.prototype = new Tank();
+
+/*
+* 敌方坦克2
+* @param context 画坦克的画布
+* @returns
+*/
+export class EnemyTwo {
+	constructor(context) {
+		this.ctx = context;
+		this.isAppear = false;
+		this.times = 0;
+		this.lives = 2;
+		this.isAI = true;
+		this.speed = 1.5;
+
+		this.draw = function(){
+			console.log("iamhere EnemyTwo draw func")
+			this.times++;
+			if (!this.isAppear) {
+				var temp = parseInt(this.times/5)%7;
+				this.ctx.drawImage(CONST.RESOURCE_IMAGE, 
+									CONST.POS["enemyBefore"][0]+temp*32,
+									CONST.POS["enemyBefore"][1],
+									32,32,
+									this.x, this.y,
+									27,27);
+				if (this.times == 34) {
+					this.isAppear = true;
+					this.times = 0;
+					this.shoot(2);
+				}
+			} else {
+				this.ctx.drawImage(CONST.RESOURCE_IMAGE, 
+									CONST.POS["enemy2"][0]+this.dir*this.size,
+									CONST.POS["enemy2"][1],
+									32,32,
+									this.x, this.y,
+									27,27);
+				//以一定的概率射击
+				if (this.times % 50 == 0) {
+					var ra = Math.random();
+					if (ra < this.shootRate) {
+						this.shoot(2);
+					}
+					this.times = 0;
+				}
+				this.move();
+			}
+		}
+	}	
+}
+EnemyTwo.prototype = new Tank();
+
+/*
+* 敌方坦克3
+* @param context 画坦克的画布
+* @returns
+*/
+export class EnemyThree {
+	constructor(context) {
+		this.ctx = context;
+		this.isAppear = false;
+		this.times = 0;
+		this.lives = 3;
+		this.isAI = true;
+		this.speed = 0.5;
+
+		this.draw = function () {
+			console.log("iamhere EnemyThree draw func")
+			this.times++;
+			if (!this.isAppear) {
+				var temp = parseInt(this.times/5)%7;
+				this.ctx.drawImage(CONST.RESOURCE_IMAGE, 
+									CONST.POS["enemyBefore"][0]+temp*32,
+									CONST.POS["enemyBefore"][1],
+									32, 32,
+									this.x, this.y,
+									27, 27);
+				if (this.times == 35) {
+					this.isAppear = true;
+					this.times = 0;
+					this.shoot(2);
+				}
+			} else {
+				this.ctx.drawImage(CONST.RESOURCE_IMAGE, 
+					                CONST.POS["enemy3"][0]+this.dir*this.size+(3-this.lives)*this.size*4,
+					                CONST.POS["enemy3"][1], 
+					                32, 32,
+					                this.x, this.y,
+					                27, 27);
+				//以一定的概率射击
+				if (this.times % 50 == 0) {
+					var ra = Math.random();
+					if (ra < this.shootRate) {
+						this.shoot(2);
+					}
+					this.move();
+				}
+			}
+		}
+	}
+}
+EnemyThree.prototype = new Tank();
 
 /**
  * 玩家坦克

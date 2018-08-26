@@ -72,7 +72,8 @@ var LEFT = 2;
 var RIGHT = 3;
 
 /**************坦克及子弹的四个方向*****************/
-var ENEMY_LOCATION = [192,0,384]; //相对与主游戏区
+//var ENEMY_LOCATION = [192,0,384]; //相对与主游戏区
+var ENEMY_LOCATION = [144,0,288]; //相对与主游戏区
 
 /**************子弹类型*****************/
 var BULLET_TYPE_PLAYER = 1;

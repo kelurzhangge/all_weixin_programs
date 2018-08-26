@@ -1,5 +1,6 @@
 var CONST = require("./const.js")
 import Num from './num.js'
+import { initMap } from './main.js'
 
 export default class Stage {
 	constructor (context, l) {
@@ -21,6 +22,7 @@ export default class Stage {
 	}
 
 	draw() {
+		console.log("iamhere stage.js draw")
 		if(this.dir == 1){
 			console.log("stage position is "+(CONST.SCREEN_WIDTH*25/32 - CONST.SCREEN_WIDTH*7/32) / 2)
 			//temp = 15*15 灰色屏幕已经画完
@@ -44,7 +46,7 @@ export default class Stage {
 				this.levelNum.draw(this.level,(CONST.SCREEN_WIDTH*7/32 + (CONST.SCREEN_WIDTH*25/32 - CONST.SCREEN_WIDTH*7/32) / 2) + 78/2 + 10, 208);
 				//this.ctx.drawImage(RESOURCE_IMAGE,POS["num"][0]+this.level*14,POS["num"][1],14, 14,308, 208,14, 14);
 				//绘制地图,调用main里面的方法
-				//initMap();
+				initMap();
 				
 			}else if(this.temp == 225 + 600){
 				//600即调用了600/15次，主要用来停顿
