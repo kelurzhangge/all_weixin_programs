@@ -9,6 +9,7 @@ import Menu from './menu.js'
 import Map from './map.js'
 import Stage from './stage.js'
 import { PlayTank, EnemyOne, EnemyTwo, EnemyThree } from './tank.js'
+require("./Helper.js")
 
 var CONST = require("./const.js")
 
@@ -22,8 +23,8 @@ var overCtx;//结束画布
 var menu = null;//菜单
 var stage = null;//舞台
 export var map = null;//地图
-var player1 = null;//玩家1
-var player2 = null;//玩家2
+export var player1 = null;//玩家1
+export var player2 = null;//玩家2
 var prop = null;
 var enemyArray = [];//敌方坦克
 export var bulletArray = [];//子弹数组
@@ -130,10 +131,10 @@ export default class Main {
     bulletArray = [];//子弹数组
     keys = [];//记录按下的按键
     crackArray = [];//爆炸数组
-    /*isGameOver = false;
+    isGameOver = false;
     overX = 176;
     overY = 384;
-    overCtx.clearRect(0,0,SCREEN_WIDTH,SCREEN_HEIGHT);*/
+    overCtx.clearRect(0,0,CONST.SCREEN_WIDTH,CONST.SCREEN_HEIGHT);
     enemyStopTime = 0;
     homeProtectedTime = -1;
     propTime = 1000;

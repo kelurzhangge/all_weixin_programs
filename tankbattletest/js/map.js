@@ -51,9 +51,18 @@ export default class Map {
 		
 		for (var i=0; i<this.HTileCount; i++) {
 			for (var j=0; j<this.wTileCount; j++) {
-				if (this.mapLevel[i][j] == CONST.WALL || this.mapLevel[i][j] == CONST.GRID || this.mapLevel[i][j] == CONST.WATER || this.mapLevel[i][j] == CONST.ICE) {
+				if (this.mapLevel[i][j] == CONST.WALL) { 
 					this.wallCtx.drawImage(CONST.RESOURCE_IMAGE, 
 						this.tileSize*(this.mapLevel[i][j]-1) + CONST.POS["map"][0], 
+						CONST.POS["map"][1], 
+						this.tileSize, this.tileSize, 
+						//j*this.tileSize + this.offsetX, 
+						//i*this.tileSize + this.offsetY, 
+						CONST.SCREEN_WIDTH*7/32 + j*this.tileSize + this.offsetX, i*this.tileSize + this.offsetY,
+						this.tileSize, this.tileSize);
+				} else if (this.mapLevel[i][j] == CONST.GRID || this.mapLevel[i][j] == CONST.WATER || this.mapLevel[i][j] == CONST.ICE) {
+					this.wallCtx.drawImage(CONST.RESOURCE_IMAGE, 
+						this.tileSize*(this.mapLevel[i][j]-1) + CONST.POS["map"][0]+6, 
 						CONST.POS["map"][1], 
 						this.tileSize, this.tileSize, 
 						//j*this.tileSize + this.offsetX, 

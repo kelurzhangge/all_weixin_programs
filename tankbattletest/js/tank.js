@@ -1,6 +1,7 @@
 var CONST = require('./const.js')
 import {enemyStopTime,map,bulletArray} from './main.js'
 import Bullet from './bullet.js'
+import {tankMapCollision} from './Collision.js'
 /**
  * 坦克基类
  * @returns
@@ -42,6 +43,7 @@ class Tank {
 				this.frame = 0;
 			}
 		}
+		console.log("iamhere this.dir is "+this.dir)
 		if(this.dir == CONST.UP){
 			this.tempY -= this.speed;
 		}else if(this.dir == CONST.DOWN){
@@ -64,23 +66,35 @@ class Tank {
 	isHit(){
 		//临界检测
 		if(this.dir == CONST.LEFT){
-			if(this.x <= map.offsetX){
-				this.x = map.offsetX;
+			/*if(this.x <= CONST.SCREEN_WIDTH + map.offsetX){
+				this.x = CONST.SCREEN_WIDTH + map.offsetX;
+				this.hit = true;
+			}*/
+			if(this.x <= CONST.SCREEN_WIDTH*7/32 + map.offsetX - 2){
+				this.x = CONST.SCREEN_WIDTH*7/32 + map.offsetX - 2;
 				this.hit = true;
 			}
 		}else if(this.dir == CONST.RIGHT){
-			if(this.x >= map.offsetX + map.mapWidth - this.size){
-				this.x = map.offsetX + map.mapWidth - this.size;
+			/*if(this.x >= CONST.SCREEN_WIDTH + map.offsetX + map.mapWidth - this.size){
+				this.x = CONST.SCREEN_WIDTH + map.offsetX + map.mapWidth - this.size;
+				this.hit = true;
+			}*/
+			if(this.x >= CONST.SCREEN_WIDTH*25/32 - map.offsetX - this.size + 6){
+				this.x = CONST.SCREEN_WIDTH*25/32 - map.offsetX - this.size + 6;
 				this.hit = true;
 			}
 		}else if(this.dir == CONST.UP ){
-			if(this.y <= map.offsetY){
-				this.y = map.offsetY;
+			if(this.y <= map.offsetY - 2){
+				this.y = map.offsetY - 2;
 				this.hit = true;
 			}
 		}else if(this.dir == CONST.DOWN){
-			if(this.y >= map.offsetY + map.mapHeight - this.size){
+			/*if(this.y >= map.offsetY + map.mapHeight - this.size){
 				this.y = map.offsetY + map.mapHeight - this.size;
+				this.hit = true;
+			}*/
+			if(this.y >= CONST.SCREEN_HEIGHT - map.offsetY - this.size + 6){
+				this.y = CONST.SCREEN_HEIGHT - map.offsetY - this.size + 6;
 				this.hit = true;
 			}
 		}
@@ -386,7 +400,7 @@ export class EnemyThree {
 					if (ra < this.shootRate) {
 						this.shoot(2);
 					}
-					this.move();
+					//this.move();
 				}
 			}
 		}

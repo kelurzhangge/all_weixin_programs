@@ -1,5 +1,7 @@
 var CONST = require("./const.js")
-import {map,bulletArray,crackArray} from './main.js'
+import {map,bulletArray,crackArray,player1,player2} from './main.js'
+import {bulletMapCollision, CheckIntersect} from './Collision.js'
+import CrackAnimation from './crackAnimation.js'
 
 export default class Bullet {
 	constructor(context, owner, type, dir) {
@@ -69,7 +71,7 @@ export default class Bullet {
 			 		}
 			 	}
 			 }
-			 /*
+			 
 			 if (!this.hit) {
 			 	//地图检测
 			 	if(bulletMapCollision(this, map)) {
@@ -109,16 +111,16 @@ export default class Bullet {
 
 			 if (this.hit) {
 			 	this.distroy();
-			 }*/
+			 }
 		}
 
-		/*销毁*//*
+		/*销毁*/
 		this.distroy = function() {
 			this.isDestroyed = true;
 			crackArray.push(new CrackAnimation(CONST.CRACK_TYPE_BULLET, this.ctx, this));
 			if (!this.owner.isAI) {
 				CONST.BULLET_DESTROY_AUDIO.play();
 			}
-		}*/
+		}
 	}
 }
