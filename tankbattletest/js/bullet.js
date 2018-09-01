@@ -45,18 +45,18 @@ export default class Bullet {
 				return;
 			}
 			//临界检测
-			 if (this.x < map.offsetX) {
-			 	this.x = map.offsetX;
+			 if (this.x < CONST.SCREEN_WIDTH*7/32 + map.offsetX) {
+			 	this.x = CONST.SCREEN_WIDTH*7/32 + map.offsetX;
 			 	this.hit = true;
-			 } else if (this.x > map.offsetX + map.mapWidth - this.size) {
-			 	this.x = map.offsetX + map.mapWidth - this.size;
+			 } else if (this.x > CONST.SCREEN_WIDTH*7/32 + map.offsetX + map.mapWidth - (this.size-5)) {
+			 	this.x = CONST.SCREEN_WIDTH*7/32 + map.offsetX + map.mapWidth - (this.size-5);
 			 	this.hit = true;
 			 }
 			 if(this.y < map.offsetY) {
 			 	this.y = map.offsetY;
 			 	this.hit = true;
-			 }else if (this.y > map.offsetY + map.mapHeight - this.size) {
-			 	this.y = map.offsetY + map.mapHeight - this.size;
+			 }else if (this.y > map.offsetY + map.mapHeight - (this.size-5)) {
+			 	this.y = map.offsetY + map.mapHeight - (this.size-5);
 			 	this.hit = true;
 			 }
 			 //子弹是否碰撞了其他子弹

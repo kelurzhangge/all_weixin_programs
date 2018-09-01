@@ -125,26 +125,26 @@ export function bulletMapCollision(bullet, mapobj) {
 	var result = false;// 是否碰撞
 	//根据bullet的x、y计算出map中的row和col
 	if(bullet.dir == CONST.UP) {
-		rowIndex = parseInt((bullet.y - mapobj.offsetY)/mapobj.tileSize);
-		colIndex = parseInt((bullet.x - mapobj.offsetX)/mapobj.tileSize);
+		rowIndex = parseInt((bullet.y - mapobj.offsetY - 2)/mapobj.tileSize);
+		colIndex = parseInt((bullet.x - (mapobj.offsetX+1) - CONST.SCREEN_WIDTH*7/32)/mapobj.tileSize);
 	} else if (bullet.dir == CONST.DOWN) {
 		//向下，即dir==1的时候，行索引的计算需要+bullet.Height
-		rowIndex = parseInt((bullet.y - mapobj.offsetY + bullet.size)/mapobj.tileSize);
-		colIndex = parseInt((bullet.x - mapobj.offsetX)/mapobj.tileSize);
+		rowIndex = parseInt((bullet.y - mapobj.offsetY - 2 + bullet.size)/mapobj.tileSize);
+		colIndex = parseInt((bullet.x - (mapobj.offsetX+1) - CONST.SCREEN_WIDTH*7/32)/mapobj.tileSize);
 	} else if (bullet.dir == CONST.LEFT) {
-		rowIndex = parseInt((bullet.y - mapobj.offsetY)/mapobj.tileSize);
-		colIndex = parseInt((bullet.x - mapobj.offsetX)/mapobj.tileSize);
+		rowIndex = parseInt((bullet.y - mapobj.offsetY - 2)/mapobj.tileSize);
+		colIndex = parseInt((bullet.x - (mapobj.offsetX+1) - CONST.SCREEN_WIDTH*7/32)/mapobj.tileSize);
 	} else if (bullet.dir == CONST.RIGHT) {
-		rowIndex = parseInt((bullet.y - mapobj.offsetY)/mapobj.tileSize);
+		rowIndex = parseInt((bullet.y - mapobj.offsetY + 2)/mapobj.tileSize);
 		//向右，即dir==3的时候，列索引的计算需要+bullet.Height
-		colIndex = parseInt((bullet.x - mapobj.offsetX + bullet.size)/mapobj.tileSize);
+		colIndex = parseInt((bullet.x - (mapobj.offsetX+1) - CONST.SCREEN_WIDTH*7/32 + bullet.size)/mapobj.tileSize);
 	}
 	if (rowIndex >= mapobj.HTileCount || rowIndex < 0 || colIndex >= mapobj.wTileCount || colIndex < 0) {
 		return true;
 	}
 
 	if (bullet.dir == CONST.UP || bullet.dir == CONST.DOWN) {
-		var tempWidth = parseInt(bullet.x - map.offsetX - (colIndex)*mapobj.tileSize + bullet.size);
+		var tempWidth = parseInt(bullet.x - (map.offsetX+1) - CONST.SCREEN_WIDTH*7/32 - (colIndex)*mapobj.tileSize + bullet.size);
 		if (tempWidth % mapobj.tileSize == 0) {
 			tileNum = parseInt(tempWidth/mapobj.tileSize);
 		} else {
@@ -166,7 +166,7 @@ export function bulletMapCollision(bullet, mapobj) {
 			}
 		}
 	} else {
-		var tempHeight = parseInt(bullet.y - map.offsetY - (rowIndex)*mapobj.tileSize + bullet.size);
+		var tempHeight = parseInt(bullet.y - map.offsetY - 2 - (rowIndex)*mapobj.tileSize + bullet.size);
 		if (tempHeight % mapobj.tileSize == 0) {
 			tileNum = parseInt(tempHeight/mapobj.tileSize);
 		} else {

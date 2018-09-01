@@ -254,8 +254,7 @@ export class EnemyOne {
 		this.times = 0;
 		this.lives = 1;
 		this.isAI = true;
-		//this.speed = 1.5;
-		this.speed = 1.5;
+		this.speed = 1.3;
 
 		this.draw = function () {
 			console.log("iamhere EnemyOne draw func")
@@ -363,7 +362,6 @@ export class EnemyThree {
 		this.speed = 0.5;
 
 		this.draw = function () {
-			console.log("iamhere EnemyThree draw func")
 			this.times++;
 			if (!this.isAppear) {
 				var temp = parseInt(this.times/5)%7;
@@ -391,8 +389,8 @@ export class EnemyThree {
 					if (ra < this.shootRate) {
 						this.shoot(2);
 					}
-					this.move();
 				}
+				this.move();
 			}
 		}
 	}
