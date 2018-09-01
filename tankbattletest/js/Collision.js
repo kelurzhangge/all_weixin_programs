@@ -1,4 +1,4 @@
-import map from './map.js'
+import {map} from './main.js'
 var CONST = require("./const.js")
 /*
 *检测2个物体是否碰撞
@@ -50,28 +50,30 @@ export function tankMapCollision(tank, mapobj) {
 	var rowIndex = 0;//map中的行索引
 	var colIndex = 0;//map中的列索引
 	var overlap = 3;//允许重叠的大小
-
+	
 	//根据tank的x,y计算出map中的row和col
+	//数字6是offsetY的调整偏移值1和tank.size的调整偏移值5的和
+
 	if (tank.dir == CONST.UP) {
 		rowIndex = parseInt((tank.tempY + overlap - mapobj.offsetY) / mapobj.tileSize);
-		colIndex = parseInt((tank.tempX + overlap - mapobj.offsetX) / mapobj.tileSize);
+		colIndex = parseInt((tank.tempX + overlap - mapobj.offsetX - CONST.SCREEN_WIDTH*7/32) / mapobj.tileSize);
 	} else if (tank.dir == CONST.DOWN) {
 		//向下，即dir==1的时候，行索引的计算需要+tank.Height
-		rowIndex = parseInt((tank.tempY - overlap - mapobj.offsetY + tank.size)/mapobj.tileSize);
-		colIndex = parseInt((tank.tempX + overlap - mapobj.offsetX)/mapobj.tileSize);
+		rowIndex = parseInt((tank.tempY - overlap - mapobj.offsetY + (tank.size-6))/mapobj.tileSize);
+		colIndex = parseInt((tank.tempX + overlap - mapobj.offsetX - CONST.SCREEN_WIDTH*7/32)/mapobj.tileSize);
 	} else if (tank.dir == CONST.LEFT) {
 		rowIndex = parseInt((tank.tempY + overlap - mapobj.offsetY)/mapobj.tileSize);
-		colIndex = parseInt((tank.tempX + overlap - mapobj.offsetX)/mapobj.tileSize);
+		colIndex = parseInt((tank.tempX + overlap - mapobj.offsetX - CONST.SCREEN_WIDTH*7/32)/mapobj.tileSize);
 	} else if (tank.dir == CONST.RIGHT) {
 		rowIndex = parseInt((tank.tempY + overlap - mapobj.offsetY)/mapobj.tileSize);
 		//向右，即dir ==3的时候，列索引的计算需要+tank.Height
-		colIndex = parseInt((tank.tempX - overlap - mapobj.offsetX + tank.size)/mapobj.tileSize);
+		colIndex = parseInt((tank.tempX - overlap - mapobj.offsetX + (tank.size-6) - CONST.SCREEN_WIDTH*7/32)/mapobj.tileSize);
 	}
 	if (rowIndex >= mapobj.HTileCount || rowIndex < 0 || colIndex >= mapobj.wTileCount || colIndex < 0) {
 		return true;
 	}
 	if (tank.dir == CONST.UP || tank.dir == CONST.DOWN) {
-		var tempWidth = parseInt(tank.tempX - map.offsetX - (colIndex)*mapobj.tileSize + tank.size - overlap); //去除重叠部分
+		var tempWidth = parseInt(tank.tempX - map.offsetX -  CONST.SCREEN_WIDTH*7/32 - (colIndex)*mapobj.tileSize + (tank.size-6) - overlap); //去除重叠部分
 		if (tempWidth % mapobj.tileSize == 0) {
 			tileNum = parseInt(tempWidth/mapobj.tileSize);
 		} else {
@@ -83,13 +85,13 @@ export function tankMapCollision(tank, mapobj) {
 				if (tank.dir == CONST.UP) {
 					tank.y = mapobj.offsetY + rowIndex * mapobj.tileSize + mapobj.tileSize - overlap;
 				} else if (tank.dir == CONST.DOWN) {
-					tank.y = mapobj.offsetY + rowIndex * mapobj.tileSize - tank.size + overlap + 7;
+					tank.y = mapobj.offsetY + rowIndex * mapobj.tileSize - (tank.size-6) + overlap;
 				}
 				return true;
 			}
 		}
 	} else {
-		var tempHeight = parseInt(tank.tempY - map.offsetY - (rowIndex)*mapobj.tileSize + tank.size - overlap); //去除重叠部分
+		var tempHeight = parseInt(tank.tempY - map.offsetY - (rowIndex)*mapobj.tileSize + (tank.size-6) - overlap); //去除重叠部分
 		if (tempHeight % mapobj.tileSize == 0) {
 			tileNum = parseInt(tempHeight/mapobj.tileSize);
 		} else {
@@ -99,9 +101,9 @@ export function tankMapCollision(tank, mapobj) {
 			var mapContent = mapobj.mapLevel[rowIndex+i][colIndex];
 			if (mapContent == CONST.WALL || mapContent == CONST.GRID || mapContent == CONST.WATER || mapContent == CONST.HOME || mapContent == CONST.ANOTHREHOME) {
 				if (tank.dir == CONST.LEFT) {
-					tank.x = mapobj.offsetX + colIndex * mapobj.tileSize + mapobj.tileSize - overlap;
+					tank.x = CONST.SCREEN_WIDTH*7/32 + mapobj.offsetX + colIndex * mapobj.tileSize + mapobj.tileSize - overlap;
 				} else if (tank.dir == CONST.RIGHT) {
-					tank.x = mapobj.offsetX + colIndex * mapobj.tileSize - tank.size + overlap;
+					tank.x = CONST.SCREEN_WIDTH*7/32 + mapobj.offsetX + colIndex * mapobj.tileSize - (tank.size-6) + overlap;
 				}
 				return true;
 			}

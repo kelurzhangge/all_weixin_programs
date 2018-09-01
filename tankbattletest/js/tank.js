@@ -66,45 +66,35 @@ class Tank {
 	isHit(){
 		//临界检测
 		if(this.dir == CONST.LEFT){
-			/*if(this.x <= CONST.SCREEN_WIDTH + map.offsetX){
-				this.x = CONST.SCREEN_WIDTH + map.offsetX;
-				this.hit = true;
-			}*/
 			if(this.x <= CONST.SCREEN_WIDTH*7/32 + map.offsetX - 2){
 				this.x = CONST.SCREEN_WIDTH*7/32 + map.offsetX - 2;
 				this.hit = true;
 			}
 		}else if(this.dir == CONST.RIGHT){
-			/*if(this.x >= CONST.SCREEN_WIDTH + map.offsetX + map.mapWidth - this.size){
-				this.x = CONST.SCREEN_WIDTH + map.offsetX + map.mapWidth - this.size;
-				this.hit = true;
-			}*/
-			if(this.x >= CONST.SCREEN_WIDTH*25/32 - map.offsetX - this.size + 6){
-				this.x = CONST.SCREEN_WIDTH*25/32 - map.offsetX - this.size + 6;
+			if(this.x >= CONST.SCREEN_WIDTH*7/32 + map.offsetX + map.mapWidth - (this.size-5)){
+				this.x = CONST.SCREEN_WIDTH*7/32 + map.offsetX + map.mapWidth - (this.size-5);
 				this.hit = true;
 			}
 		}else if(this.dir == CONST.UP ){
-			if(this.y <= map.offsetY - 2){
-				this.y = map.offsetY - 2;
+			if(this.y <= map.offsetY - 1){
+				this.y = map.offsetY - 1;
 				this.hit = true;
 			}
 		}else if(this.dir == CONST.DOWN){
-			/*if(this.y >= map.offsetY + map.mapHeight - this.size){
-				this.y = map.offsetY + map.mapHeight - this.size;
-				this.hit = true;
-			}*/
-			if(this.y >= CONST.SCREEN_HEIGHT - map.offsetY - this.size + 6){
-				this.y = CONST.SCREEN_HEIGHT - map.offsetY - this.size + 6;
+			console.log("offsetY is "+map.offsetY);
+			if(this.y >= map.offsetY + map.mapHeight - (this.size-6)){
+				this.y = map.offsetY + map.mapHeight - (this.size-6);
 				this.hit = true;
 			}
 		}
-		/*
+		
+		
 		if(!this.hit){
 			//地图检测
 			if(tankMapCollision(this,map)){
 				this.hit = true;
 			}
-		}*/
+		}
 		//坦克检测
 		/*if(enemyArray != null && enemyArray.length >0){
 			var enemySize = enemyArray.length;
@@ -264,6 +254,7 @@ export class EnemyOne {
 		this.times = 0;
 		this.lives = 1;
 		this.isAI = true;
+		//this.speed = 1.5;
 		this.speed = 1.5;
 
 		this.draw = function () {
@@ -400,7 +391,7 @@ export class EnemyThree {
 					if (ra < this.shootRate) {
 						this.shoot(2);
 					}
-					//this.move();
+					this.move();
 				}
 			}
 		}

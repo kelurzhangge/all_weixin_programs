@@ -20,8 +20,8 @@ export default class Map {
 		this.tileSize = 12;	//调整后地图块的大小
 		this.homeSize = 32; //家图标的大小
 		this.num = new Num(this.wallCtx);
-		this.mapWidth = 416;
-		this.mapHeight = 416;
+		this.mapWidth = (CONST.SCREEN_WIDTH*25/32 - CONST.SCREEN_WIDTH*7/32)-this.offsetX*2;
+		this.mapHeight = CONST.SCREEN_HEIGHT-this.offsetY*2;
 
 	}
 
