@@ -307,6 +307,12 @@ export default class Main {
       }
     }
   }
+
+  homeNoProtected(){
+    var mapChangeIndex = [[23,11],[23,12],[23,13],[23,14],[24,11],[24,14],[25,11],[25,14]];
+    map.updateMap(mapChangeIndex,CONST.WALL);
+  }
+  
   drawAll(){
     console.log("iamhere enter drawAll func")
 
@@ -338,13 +344,13 @@ export default class Main {
       drawProp();
     }else{
       propTime --;
-    }*//*
+    }*/
     if(homeProtectedTime > 0){
       homeProtectedTime --;
     }else if(homeProtectedTime == 0){
       homeProtectedTime = -1;
       homeNoProtected();
-    }*/
+    }
   }
 
 
@@ -385,6 +391,8 @@ export default class Main {
       break;
     }
   }
+
+  
 }
 
 function drawLives(){

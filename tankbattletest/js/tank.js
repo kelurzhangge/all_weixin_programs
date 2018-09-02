@@ -135,7 +135,7 @@ class Tank {
 			}else if(this.dir == CONST.LEFT){
 				tempX = this.x - this.bullet.size;
 				tempY = this.y + parseInt(this.size/2) - parseInt(this.bullet.size/2);
-			}else if(this.dir == CONST.IGHT){
+			}else if(this.dir == CONST.RIGHT){
 				tempX = this.x + this.size;
 				tempY = this.y + parseInt(this.size/2) - parseInt(this.bullet.size/2);
 			}
