@@ -1,5 +1,5 @@
 var CONST = require("./const.js")
-import {map,bulletArray,crackArray,player1,player2} from './main.js'
+import {map,bulletArray,enemyArray,crackArray,player1,player2} from './main.js'
 import {bulletMapCollision, CheckIntersect} from './Collision.js'
 import CrackAnimation from './crackAnimation.js'
 

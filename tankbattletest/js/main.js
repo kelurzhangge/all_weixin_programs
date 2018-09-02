@@ -1,14 +1,8 @@
-/*import Player from './player/index'
-import Enemy from './npc/enemy'
-import BackGround from './runtime/background'
-import GameInfo from './runtime/gameinfo'
-import Music from './runtime/music'
-import DataBus from './databus'*/
-//import CONST from './const.js'
 import Menu from './menu.js'
 import Map from './map.js'
 import Stage from './stage.js'
 import Prop from './prop.js'
+
 import { PlayTank, EnemyOne, EnemyTwo, EnemyThree } from './tank.js'
 require("./Helper.js")
 
@@ -27,7 +21,7 @@ export var map = null;//地图
 export var player1 = null;//玩家1
 export var player2 = null;//玩家2
 var prop = null;
-var enemyArray = [];//敌方坦克
+export var enemyArray = [];//敌方坦克
 export var bulletArray = [];//子弹数组
 var keys = [];//记录按下的按键
 export var crackArray = [];//爆炸数组
@@ -120,12 +114,12 @@ export default class Main {
     //this.player1 = new PlayTank(tankCtx);
     player1 = new PlayTank(tankCtx);
     //player1.x = 129 + map.offsetX;
-    player1.x = 94 + map.offsetX;
+    player1.x = 94 + map.offsetX + CONST.SCREEN_WIDTH*7/32;
     //player1.y = 385 + map.offsetY;
-    player1.y = 285 + map.offsetY;;
+    player1.y = 285 + map.offsetY;
     player2 = new PlayTank(tankCtx);
     player2.offsetX = 128; //player2的图片x与图片1相距128
-    player2.x = 189 + map.offsetX;
+    player2.x = 40 + map.offsetX + CONST.SCREEN_WIDTH*7/32;
     player2.y = 285 + map.offsetY;
     appearEnemy = 0; //已出现的敌方坦克
     enemyArray = [];//敌方坦克
@@ -158,7 +152,7 @@ export default class Main {
    * 最上面的y坐标：282， 最下面的y坐标：338， 最左边的x坐标：589， 最右边的x坐标：645     手指坐标在这个范围内代表C区域
    */
   checkFingerOnWhichButton(x, y) {
-    console.log("iamhere index.js enter checkIsFingerOnUpButton func")
+    //console.log("iamhere index.js enter checkIsFingerOnUpButton func")
     console.log("x is "+ x +", y is " + y)
 
     if ((x >= 16 && x <= 59) && (y >= 243 && y <= 275)) { //左
@@ -181,20 +175,19 @@ export default class Main {
   }
 
   initEvent() {
-    console.log("iamhere main.js enter initEvent func")
+    //console.log("iamhere main.js enter initEvent func")
     canvas.addEventListener('touchstart', ((e) => {
       e.preventDefault()
 
       let x = e.touches[0].clientX
       let y = e.touches[0].clientY
 
-      console.log("clientX is "+e.touches[0].clientX)
-      console.log("clientY is "+e.touches[0].clientY)
-      console.log("e is "+e)
+      //console.log("clientX is "+e.touches[0].clientX)
+      //console.log("clientY is "+e.touches[0].clientY)
 
+      this.checkFingerOnWhichButton(x, y);
       switch(gameState){
         case CONST.GAME_STATE_MENU:
-          this.checkFingerOnWhichButton(x, y);
           console.log("iamhere cur_direction is "+ cur_direction)
           if (cur_direction == 5) {  //A图片，相当于回车
             gameState = CONST.GAME_STATE_INIT;
@@ -213,19 +206,39 @@ export default class Main {
           }
           break;
         case CONST.GAME_STATE_START:
-          if(!keys.contain(e.keyCode)){
+          console.log("iamhere=============/////// cur_direction is "+ cur_direction)
+          /*if(!keys.contain(e.keyCode)){
             keys.push(e.keyCode);
+          }*/
+          keys = [];//add by zhangge
+          if (!keys.contain(cur_direction)) {
+            keys.push(cur_direction);
           }
+
           //射击
-          if(e.keyCode == keyboard.SPACE && player1.lives > 0){
-            player1.shoot(BULLET_TYPE_PLAYER);
-          }else if(e.keyCode == keyboard.ENTER && player2.lives > 0){
-            player2.shoot(BULLET_TYPE_ENEMY);
-          }else if(e.keyCode == keyboard.N){
-            nextLevel();
-          }else if(e.keyCode == keyboard.P){
-            preLevel();
-          }
+          //if(e.keyCode == keyboard.SPACE && player1.lives > 0){
+          if (cur_direction == 5) {
+            player1.shoot(CONST.BULLET_TYPE_PLAYER);
+          //}else if(e.keyCode == keyboard.ENTER && player2.lives > 0){
+          }else if(cur_direction == 6 && player2.lives > 0) {
+            player2.shoot(CONST.BULLET_TYPE_ENEMY);
+          //}else if(e.keyCode == keyboard.N){
+          } else if(cur_direction == 7) {
+            this.nextLevel();
+          }/*else if(e.keyCode == keyboard.P){
+            this.preLevel();
+          }*/
+          break;
+      }
+
+    }).bind(this))
+
+    canvas.addEventListener('touchend', ((e) => {
+      e.preventDefault()
+
+      switch(gameState){
+        case CONST.GAME_STATE_START:
+          keys = [];//add by zhangge
           break;
       }
 
@@ -234,7 +247,7 @@ export default class Main {
   }
 
   addEnemyTank(){
-    console.log("iamhre enter addEnemyTank")
+    //console.log("iamhre enter addEnemyTank")
     if(enemyArray == null || enemyArray.length >= maxAppearEnemy || maxEnemy == 0){
       return ;
     }
@@ -251,7 +264,7 @@ export default class Main {
     //obj.x = CONST.ENEMY_LOCATION[parseInt(Math.random()*3)] + map.offsetX;
     obj.x = CONST.ENEMY_LOCATION[parseInt(Math.random()*3)] -2 + map.offsetX+CONST.SCREEN_WIDTH*7/32;
     obj.y = map.offsetY;  
-    console.log("iamhere obj.x is "+obj.x+", obj.y is "+obj.y+", enemyArray lenght is "+enemyArray.length);
+    //console.log("iamhere obj.x is "+obj.x+", obj.y is "+obj.y+", enemyArray lenght is "+enemyArray.length);
     obj.dir = CONST.DOWN;
     enemyArray[enemyArray.length] = obj;
     //更新地图右侧坦克数
@@ -259,7 +272,7 @@ export default class Main {
   }
 
   drawEnemyTanks(){
-    console.log("imahere enter drawEnemyTanks func"+enemyArray.length)
+    //console.log("imahere enter drawEnemyTanks func"+enemyArray.length)
     if(enemyArray != null || enemyArray.length > 0){
       for(var i=0;i<enemyArray.length;i++){
         var enemyObj = enemyArray[i];
@@ -357,7 +370,7 @@ export default class Main {
     if(this.menu.playNum == 1){
       player2.lives = 0;
     }
-    stage.init(level);
+    this.stage.init(level);
     gameState = CONST.GAME_STATE_INIT;
   }
 
@@ -375,6 +388,57 @@ export default class Main {
     gameState = CONST.GAME_STATE_INIT;
   }
 
+  keyEvent(){
+    console.log("iamhere neter keyEvent, ((((())))))")
+    //if(keys.contain(keyboard.W)){
+    console.log("keys is "+keys);
+    var key_W = 1;
+    var key_S = 2;
+    var key_A = 3;
+    var key_D = 4;
+    if(keys.contain(key_W)){
+      player1.dir = CONST.UP;
+      player1.hit = false;
+      player1.move();
+      console.log("player1.move +++++++++++++++++++++++++=")
+    //}else if(keys.contain(keyboard.S)){
+    }else if(keys.contain(key_S)){
+      player1.dir = CONST.DOWN;
+      player1.hit = false;
+      player1.move();
+    //}else if(keys.contain(keyboard.A)){
+    }else if(keys.contain(key_A)){
+      player1.dir = CONST.LEFT;
+      player1.hit = false;
+      player1.move();
+    //}else if(keys.contain(keyboard.D)){
+    }else if(keys.contain(key_D)){
+      player1.dir = CONST.RIGHT;
+      player1.hit = false;
+      player1.move();
+    }
+
+    
+    /*if(keys.contain(keyboard.UP)){
+      player2.dir = CONST.UP;
+      player2.hit = false;
+      player2.move();
+    }else if(keys.contain(keyboard.DOWN)){
+      player2.dir = CONST.DOWN;
+      player2.hit = false;
+      player2.move();
+    }else if(keys.contain(keyboard.LEFT)){
+      player2.dir = CONST.LEFT;
+      player2.hit = false;
+      player2.move();
+    }else if(keys.contain(keyboard.RIGHT)){
+      player2.dir = CONST.RIGHT;
+      player2.hit = false;
+      player2.move();
+    }*/
+    
+  }
+
   drawAll(){
     console.log("iamhere enter drawAll func")
 
@@ -389,7 +453,7 @@ export default class Main {
       player2.draw();
     }
     drawLives();
-    console.log("drawAll, appearEnemy is "+appearEnemy + ", maxEnemy is "+maxEnemy);
+    //console.log("drawAll, appearEnemy is "+appearEnemy + ", maxEnemy is "+maxEnemy);
     if(appearEnemy<maxEnemy){
       if(mainframe % 100 == 0){
         this.addEnemyTank();
@@ -397,11 +461,12 @@ export default class Main {
       }
       mainframe++;
     }
-    
+
     this.drawEnemyTanks();
     this.drawBullet();
     this.drawCrack();
-    //keyEvent();
+
+    this.keyEvent();
     if(propTime<=0){
       this.drawProp();
     }else{
@@ -418,7 +483,7 @@ export default class Main {
 
   gameLoop(){
     /*test_count++;
-    if (test_count > 100) {
+    if (test_count > 100000) {
       return
     }*/
     switch(gameState){
@@ -519,44 +584,7 @@ $(document).keyup(function(e){
 
 
 
-function keyEvent(){
-  if(keys.contain(keyboard.W)){
-    player1.dir = UP;
-    player1.hit = false;
-    player1.move();
-  }else if(keys.contain(keyboard.S)){
-    player1.dir = DOWN;
-    player1.hit = false;
-    player1.move();
-  }else if(keys.contain(keyboard.A)){
-    player1.dir = LEFT;
-    player1.hit = false;
-    player1.move();
-  }else if(keys.contain(keyboard.D)){
-    player1.dir = RIGHT;
-    player1.hit = false;
-    player1.move();
-  }
-  
-  if(keys.contain(keyboard.UP)){
-    player2.dir = UP;
-    player2.hit = false;
-    player2.move();
-  }else if(keys.contain(keyboard.DOWN)){
-    player2.dir = DOWN;
-    player2.hit = false;
-    player2.move();
-  }else if(keys.contain(keyboard.LEFT)){
-    player2.dir = LEFT;
-    player2.hit = false;
-    player2.move();
-  }else if(keys.contain(keyboard.RIGHT)){
-    player2.dir = RIGHT;
-    player2.hit = false;
-    player2.move();
-  }
-  
-}
+
 
 function addEnemyTank(){
   if(enemyArray == null || enemyArray.length >= maxAppearEnemy || maxEnemy == 0){

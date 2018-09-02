@@ -1,7 +1,8 @@
 var CONST = require('./const.js')
-import {enemyStopTime,map,bulletArray} from './main.js'
+import {enemyStopTime,crackArray,map,bulletArray} from './main.js'
 import Bullet from './bullet.js'
 import {tankMapCollision} from './Collision.js'
+import CrackAnimation from './crackAnimation.js'
 /**
  * 坦克基类
  * @returns
@@ -22,142 +23,146 @@ class Tank {
 		this.isDestroyed = false;
 		this.tempX = 0;
 		this.tempY = 0;
-	}
 	
 	
-	move(){
-		//如果是AI坦克，在一定时间或者碰撞之后切换方法
-		
-		if(this.isAI && enemyStopTime > 0 ){
-			return;
-		}
+	
+		this.move = function(){
+			console.log("iamhere enter move +++++++++++")
+			//如果是AI坦克，在一定时间或者碰撞之后切换方法
+			
+			if(this.isAI && enemyStopTime > 0 ){
+				return;
+			}
 
-		this.tempX = this.x;
-		this.tempY = this.y;
-		
-		if(this.isAI){
-			this.frame ++;
-			if(this.frame % 100 == 0 || this.hit){
-				this.dir = parseInt(Math.random()*4);//随机一个方向
-				this.hit = false;
-				this.frame = 0;
-			}
-		}
-		console.log("iamhere this.dir is "+this.dir)
-		if(this.dir == CONST.UP){
-			this.tempY -= this.speed;
-		}else if(this.dir == CONST.DOWN){
-			this.tempY += this.speed;
-		}else if(this.dir == CONST.RIGHT){
-			this.tempX += this.speed;
-		}else if(this.dir == CONST.LEFT){
-			this.tempX -= this.speed;
-		}
-		this.isHit();
-		if(!this.hit){
-			this.x = this.tempX;
-			this.y = this.tempY;
-		}
-	}
-	
-	/**
-	 * 碰撞检测
-	 */
-	isHit(){
-		//临界检测
-		if(this.dir == CONST.LEFT){
-			if(this.x <= CONST.SCREEN_WIDTH*7/32 + map.offsetX - 2){
-				this.x = CONST.SCREEN_WIDTH*7/32 + map.offsetX - 2;
-				this.hit = true;
-			}
-		}else if(this.dir == CONST.RIGHT){
-			if(this.x >= CONST.SCREEN_WIDTH*7/32 + map.offsetX + map.mapWidth - (this.size-5)){
-				this.x = CONST.SCREEN_WIDTH*7/32 + map.offsetX + map.mapWidth - (this.size-5);
-				this.hit = true;
-			}
-		}else if(this.dir == CONST.UP ){
-			if(this.y <= map.offsetY - 1){
-				this.y = map.offsetY - 1;
-				this.hit = true;
-			}
-		}else if(this.dir == CONST.DOWN){
-			console.log("offsetY is "+map.offsetY);
-			if(this.y >= map.offsetY + map.mapHeight - (this.size-6)){
-				this.y = map.offsetY + map.mapHeight - (this.size-6);
-				this.hit = true;
-			}
-		}
-		
-		
-		if(!this.hit){
-			//地图检测
-			if(tankMapCollision(this,map)){
-				this.hit = true;
-			}
-		}
-		//坦克检测
-		/*if(enemyArray != null && enemyArray.length >0){
-			var enemySize = enemyArray.length;
-			for(var i=0;i<enemySize;i++){
-				if(enemyArray[i] != this && CheckIntersect(enemyArray[i],this,0)){
-					this.hit = true;
-					break;
+			this.tempX = this.x;
+			this.tempY = this.y;
+			
+			if(this.isAI){
+				this.frame ++;
+				if(this.frame % 100 == 0 || this.hit){
+					this.dir = parseInt(Math.random()*4);//随机一个方向
+					this.hit = false;
+					this.frame = 0;
 				}
 			}
-		}*/
-	}
-	
-	/**
-	 * 是否被击中
-	 */
-	isShot(){
-		
-	}
-	/**
-	 * 射击
-	 */ 
-	shoot(type){
-		if(this.isAI && enemyStopTime > 0 ){
-			return;
-		}
-		if(this.isShooting){
-			return ;
-		}else{
-			var tempX = this.x;
-			var tempY = this.y;
-			this.bullet = new Bullet(this.ctx,this,type,this.dir);
+			console.log("iamhere this.dir is "+this.dir)
 			if(this.dir == CONST.UP){
-				tempX = this.x + parseInt(this.size/2) - parseInt(this.bullet.size/2);
-				tempY = this.y - this.bullet.size;
+				this.tempY -= this.speed;
 			}else if(this.dir == CONST.DOWN){
-				tempX = this.x + parseInt(this.size/2) - parseInt(this.bullet.size/2);
-				tempY = this.y + this.size;
-			}else if(this.dir == CONST.LEFT){
-				tempX = this.x - this.bullet.size;
-				tempY = this.y + parseInt(this.size/2) - parseInt(this.bullet.size/2);
+				this.tempY += this.speed;
 			}else if(this.dir == CONST.RIGHT){
-				tempX = this.x + this.size;
-				tempY = this.y + parseInt(this.size/2) - parseInt(this.bullet.size/2);
+				this.tempX += this.speed;
+			}else if(this.dir == CONST.LEFT){
+				this.tempX -= this.speed;
 			}
-			this.bullet.x = tempX;
-			this.bullet.y = tempY;
-			if(!this.isAI){
-				CONST.ATTACK_AUDIO.play();
+			this.isHit();
+			console.log("iamhere ++++++++ this.hit is "+this.hit)
+			if(!this.hit){
+				this.x = this.tempX;
+				this.y = this.tempY;
 			}
-			this.bullet.draw();
-			//将子弹加入的子弹数组中
-			bulletArray.push(this.bullet);
-			this.isShooting = true;
+			console.log("iamher ethis.x is "+this.x + ", this.y is "+this.y);
 		}
-	}
-	
-	/**
-	 * 坦克被击毁
-	 */
-	distroy(){
-		this.isDestroyed = true;
-		crackArray.push(new CrackAnimation(CONST.CRACK_TYPE_TANK,this.ctx,this));
-		CONST.TANK_DESTROY_AUDIO.play();
+		
+		/**
+		 * 碰撞检测
+		 */
+		this.isHit = function(){
+			//临界检测
+			if(this.dir == CONST.LEFT){
+				if(this.x <= CONST.SCREEN_WIDTH*7/32 + map.offsetX - 2){
+					this.x = CONST.SCREEN_WIDTH*7/32 + map.offsetX - 2;
+					this.hit = true;
+				}
+			}else if(this.dir == CONST.RIGHT){
+				if(this.x >= CONST.SCREEN_WIDTH*7/32 + map.offsetX + map.mapWidth - (this.size-5)){
+					this.x = CONST.SCREEN_WIDTH*7/32 + map.offsetX + map.mapWidth - (this.size-5);
+					this.hit = true;
+				}
+			}else if(this.dir == CONST.UP ){
+				if(this.y <= map.offsetY - 1){
+					this.y = map.offsetY - 1;
+					this.hit = true;
+				}
+			}else if(this.dir == CONST.DOWN){
+				console.log("offsetY is "+map.offsetY);
+				if(this.y >= map.offsetY + map.mapHeight - (this.size-6)){
+					this.y = map.offsetY + map.mapHeight - (this.size-6);
+					this.hit = true;
+				}
+			}
+			
+			
+			if(!this.hit){
+				//地图检测
+				if(tankMapCollision(this,map)){
+					this.hit = true;
+				}
+			}
+			//坦克检测
+			/*if(enemyArray != null && enemyArray.length >0){
+				var enemySize = enemyArray.length;
+				for(var i=0;i<enemySize;i++){
+					if(enemyArray[i] != this && CheckIntersect(enemyArray[i],this,0)){
+						this.hit = true;
+						break;
+					}
+				}
+			}*/
+		}
+		
+		/**
+		 * 是否被击中
+		 */
+		this.isShot = function(){
+			
+		}
+		/**
+		 * 射击
+		 */ 
+		this.shoot = function(type){
+			if(this.isAI && enemyStopTime > 0 ){
+				return;
+			}
+			if(this.isShooting){
+				return ;
+			}else{
+				var tempX = this.x;
+				var tempY = this.y;
+				this.bullet = new Bullet(this.ctx,this,type,this.dir);
+				if(this.dir == CONST.UP){
+					tempX = this.x + parseInt(this.size/2) - parseInt(this.bullet.size/2);
+					tempY = this.y - this.bullet.size;
+				}else if(this.dir == CONST.DOWN){
+					tempX = this.x + parseInt(this.size/2) - parseInt(this.bullet.size/2);
+					tempY = this.y + this.size;
+				}else if(this.dir == CONST.LEFT){
+					tempX = this.x - this.bullet.size;
+					tempY = this.y + parseInt(this.size/2) - parseInt(this.bullet.size/2);
+				}else if(this.dir == CONST.RIGHT){
+					tempX = this.x + this.size;
+					tempY = this.y + parseInt(this.size/2) - parseInt(this.bullet.size/2);
+				}
+				this.bullet.x = tempX;
+				this.bullet.y = tempY;
+				if(!this.isAI){
+					CONST.ATTACK_AUDIO.play();
+				}
+				this.bullet.draw();
+				//将子弹加入的子弹数组中
+				bulletArray.push(this.bullet);
+				this.isShooting = true;
+			}
+		}
+		
+		/**
+		 * 坦克被击毁
+		 */
+		this.distroy = function(){
+			this.isDestroyed = true;
+			crackArray.push(new CrackAnimation(CONST.CRACK_TYPE_TANK,this.ctx,this));
+			CONST.TANK_DESTROY_AUDIO.play();
+		}
 	}
 };
 
@@ -189,16 +194,20 @@ export class PlayTank {
 		this.offsetX = 0;//坦克2与坦克1的距离
 		this.speed = 2;//坦克的速度
 
+		//this.move = function() {
+
+		//}
+
 		this.draw = function() {
-			console.log("imahere this.draw enter")
+			console.log("imahere PlayTank, this.draw enter")
 			this.hit = false;
 			console.log("iamhere this.x is "+this.x+", this.y is "+this.y);
 			this.ctx.drawImage(CONST.RESOURCE_IMAGE, 
 				CONST.POS["player"][0]+this.offsetX+this.dir*this.size,
 				CONST.POS["player"][1],
 				this.size, this.size,
-				//this.x, this.y,
-				CONST.SCREEN_WIDTH*7/32+this.x, this.y,
+				this.x, this.y,
+				//CONST.SCREEN_WIDTH*7/32+this.offsetX+this.x, this.offsetY+this.y,
 				//this.size, this.size);
 				27, 27);
 			if (this.isProtected) {
@@ -207,21 +216,22 @@ export class PlayTank {
 									CONST.POS["protected"][0],
 									CONST.POS["protected"][1]+32*temp,
 									32, 32,
-									//this.x, this.y, 
-									CONST.SCREEN_WIDTH*7/32+this.x, this.y,
+									this.x, this.y, 
+									//CONST.SCREEN_WIDTH*7/32+this.x, this.y,
 									27, 27);
 				this.protectedTime--;
 				if (this.protectedTime == 0) {
 					this.isProtected = false;
 				}
+				
 			}
-		};
+		}
 
 		this.distroy= function () {
 			this.isDestroyed = true;
 			crackArray.push(new CrackAnimation(CONST.CRACK_TYPE_TANK, this.ctx, this));
 			CONST.PLAYER_DESTROY_AUDIO.play();
-		};
+		}
 
 		this.renascenc = function () {
 			this.lives--;
@@ -237,7 +247,7 @@ export class PlayTank {
 			}
 			this.x = temp + map.offsetX;
 			this.y = 385 + map.offsetY;
-		};
+		}
 	}
 }
 PlayTank.prototype = new Tank();
@@ -257,7 +267,7 @@ export class EnemyOne {
 		this.speed = 1.3;
 
 		this.draw = function () {
-			console.log("iamhere EnemyOne draw func")
+			//console.log("iamhere EnemyOne draw func")
 			this.times++;
 			if (!this.isAppear) {
 				var temp = parseInt(this.times/5)%7;
@@ -310,7 +320,7 @@ export class EnemyTwo {
 		this.speed = 1.5;
 
 		this.draw = function(){
-			console.log("iamhere EnemyTwo draw func")
+			//console.log("iamhere EnemyTwo draw func")
 			this.times++;
 			if (!this.isAppear) {
 				var temp = parseInt(this.times/5)%7;
