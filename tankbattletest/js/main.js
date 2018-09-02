@@ -8,6 +8,7 @@ import DataBus from './databus'*/
 import Menu from './menu.js'
 import Map from './map.js'
 import Stage from './stage.js'
+import Prop from './prop.js'
 import { PlayTank, EnemyOne, EnemyTwo, EnemyThree } from './tank.js'
 require("./Helper.js")
 
@@ -312,7 +313,68 @@ export default class Main {
     var mapChangeIndex = [[23,11],[23,12],[23,13],[23,14],[24,11],[24,14],[25,11],[25,14]];
     map.updateMap(mapChangeIndex,CONST.WALL);
   }
-  
+
+  drawProp(){
+    var rand = Math.random();
+    if(rand < 0.4 && prop == null){
+      prop = new Prop(overCtx);
+      prop.init();
+    }
+    if(prop != null){
+      prop.draw();
+      if(prop.isDestroyed){
+        prop = null;
+        propTime = 1000;
+      }
+    }
+  }
+
+  gameOver(){
+    overCtx.clearRect(0,0,CONST.SCREEN_WIDTH,CONST.SCREEN_HEIGHT);
+    overCtx.drawImage(CONST.RESOURCE_IMAGE,
+                    CONST.POS["over"][0],CONST.POS["over"][1],
+                    64,32,
+                    overX+map.offsetX+CONST.SCREEN_WIDTH*7/32,overY+map.offsetY,
+                    48,30);
+    overY -= 2 ;
+    if(overY <= parseInt(map.mapHeight/2)){
+      this.initObject();
+      //只有一个玩家
+      if(this.menu.playNum == 1){
+        player2.lives = 0;
+      }
+      gameState = CONST.GAME_STATE_MENU;
+    }
+  }
+
+  nextLevel(){
+    level ++;
+    if(level == 22){
+      level = 1;
+    }
+    this.initObject();
+    //只有一个玩家
+    if(this.menu.playNum == 1){
+      player2.lives = 0;
+    }
+    stage.init(level);
+    gameState = CONST.GAME_STATE_INIT;
+  }
+
+  preLevel(){
+    level --;
+    if(level == 0){
+      level = 21;
+    }
+    this.initObject();
+    //只有一个玩家
+    if(menu.playNum == 1){
+      player2.lives = 0;
+    }
+    stage.init(level);
+    gameState = CONST.GAME_STATE_INIT;
+  }
+
   drawAll(){
     console.log("iamhere enter drawAll func")
 
@@ -340,16 +402,16 @@ export default class Main {
     this.drawBullet();
     this.drawCrack();
     //keyEvent();
-    /*if(propTime<=0){
-      drawProp();
+    if(propTime<=0){
+      this.drawProp();
     }else{
       propTime --;
-    }*/
+    }
     if(homeProtectedTime > 0){
       homeProtectedTime --;
     }else if(homeProtectedTime == 0){
       homeProtectedTime = -1;
-      homeNoProtected();
+      this.homeNoProtected();
     }
   }
 
@@ -374,20 +436,21 @@ export default class Main {
     case CONST.GAME_STATE_START:
       console.log("iamhere enter GAME_STATE_START")
       this.drawAll();
-      /*if(isGameOver ||(player1.lives <=0 && player2.lives <= 0)){
+      console.log("iamhere isGameOver is "+isGameOver)
+      if(isGameOver ||(player1.lives <=0 && player2.lives <= 0)){
         gameState = CONST.GAME_STATE_OVER;
-        this.map.homeHit();
+        map.homeHit();
         CONST.PLAYER_DESTROY_AUDIO.play();
       }
       if(appearEnemy == maxEnemy && enemyArray.length == 0){
         gameState  = CONST.GAME_STATE_WIN;
-      }*/
+      }
       break;
     case CONST.GAME_STATE_WIN:
-      nextLevel();
+      this.nextLevel();
       break;
     case CONST.GAME_STATE_OVER:
-      gameOver();
+      this.gameOver();
       break;
     }
   }
@@ -404,6 +467,9 @@ export function initMap(){
     map.setMapLevel(level);
     map.draw();
     drawLives();
+}
+export function setIsGameOverTure() {
+  isGameOver = true;
 }
 /*
 $(document).keydown(function(e){

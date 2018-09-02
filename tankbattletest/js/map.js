@@ -222,9 +222,9 @@ export default class Map {
 		this.wallCtx.drawImage(CONST.RESOURCE_IMAGE, CONST.POS["home"][0]+this.homeSize,
 								CONST.POS["home"][1],
 								this.homeSize, this.homeSize,
-								12*this.tileSize + this.offsetX,
+								12*this.tileSize + this.offsetX + CONST.SCREEN_WIDTH*7/32,
 								24*this.tileSize + this.offsetY,
-								this.homeSize, this.homeSize);
+								this.homeSize-8, this.homeSize-8);
 	}
 }
 

@@ -1,4 +1,4 @@
-import {map} from './main.js'
+import {map,setIsGameOverTure} from './main.js'
 var CONST = require("./const.js")
 /*
 *检测2个物体是否碰撞
@@ -162,7 +162,8 @@ export function bulletMapCollision(bullet, mapobj) {
 				} else if (mapContent == CONST.GRID) {
 
 				} else {
-					isGameOver = true;
+					//isGameOver = true;
+					setIsGameOverTure();
 					break;
 				}
 			}
@@ -185,7 +186,8 @@ export function bulletMapCollision(bullet, mapobj) {
 				} else if (mapContent == CONST.GRID) {
 
 				} else {
-					isGameOver = true;
+					setIsGameOverTure();
+					//isGameOver = true;
 					break;
 				}
 			}

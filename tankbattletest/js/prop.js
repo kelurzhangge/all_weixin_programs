@@ -1,5 +1,6 @@
 var CONST = require("./const.js")
-import {map} from './map.js'
+import {CheckIntersect} from './Collision.js'
+import {map,player1,player2} from './main.js'
 
 export default class Prop {
 	constructor(context) {
@@ -26,8 +27,8 @@ export default class Prop {
 		this.draw = function() {
 			if (this.duration > 0 && !this.isDestroyed) {
 				this.ctx.drawImage(CONST.RESOURCE_IMAGE, 
-									POS["prop"][0]+this.type*this.width, 
-									POS["prop"][1],
+									CONST.POS["prop"][0]+this.type*this.width, 
+									CONST.POS["prop"][1],
 									this.width,
 									this.height,
 									this.x,
@@ -64,7 +65,7 @@ export default class Prop {
 						break;
 					case 2:
 						var mapChangeIndex = [[23,11],[23,12],[23,13],[23,14],[24,11],[24,14],[25,11],[25,14]];
-						map.updateMap(mapChangeIndex, GRID);
+						map.updateMap(mapChangeIndex, CONST.GRID);
 						homeProtectedTime = 500;
 						break;
 					case 3:
